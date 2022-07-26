@@ -1,30 +1,34 @@
-/* SPDX-License-Identifier: GPL-2.0
- *
- * Copyright (c) 2019 MediaTek Inc.
+/* Copyright  2016 MediaTek Inc.
+ * Author: Nelson Chang <nelson.chang@mediatek.com>
+ * Author: Carlos Huang <carlos.huang@mediatek.com>
  * Author: Harry Huang <harry.huang@mediatek.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  */
-
 #ifndef _RA_NAT_WANTED
 #define _RA_NAT_WANTED
 
 #include <linux/ip.h>
 #include <linux/ipv6.h>
 
-#ifndef NEXTHDR_IPIP
-#define NEXTHDR_IPIP 4
-#endif
-
 #define hwnat_vlan_tx_tag_present(__skb)     ((__skb)->vlan_tci & VLAN_TAG_PRESENT)
 #define hwnat_vlan_tag_get(__skb)         ((__skb)->vlan_tci & ~VLAN_TAG_PRESENT)
 
-#if defined(CONFIG_HW_NAT)
-extern void hwnat_magic_tag_set_zero(struct sk_buff *skb);
-extern void hwnat_check_magic_tag(struct sk_buff *skb);
-extern void hwnat_set_headroom_zero(struct sk_buff *skb);
-extern void hwnat_set_tailroom_zero(struct sk_buff *skb);
-extern void hwnat_copy_headroom(u8 *data, struct sk_buff *skb);
-extern void hwnat_copy_tailroom(u8 *data, int size, struct sk_buff *skb);
-extern void hwnat_setup_dma_ops(struct device *dev, bool coherent);
+#if defined(CONFIG_RA_NAT_HW)
+void hwnat_magic_tag_set_zero(struct sk_buff *skb);
+void hwnat_check_magic_tag(struct sk_buff *skb);
+void hwnat_set_headroom_zero(struct sk_buff *skb);
+void hwnat_set_tailroom_zero(struct sk_buff *skb);
+void hwnat_copy_headroom(u8 *data, struct sk_buff *skb);
+void hwnat_copy_tailroom(u8 *data, int size, struct sk_buff *skb);
+
 #else
 
 static inline void hwnat_magic_tag_set_zero(struct sk_buff *skb)
@@ -52,7 +56,6 @@ static inline void hwnat_copy_tailroom(u8 *data, int size, struct sk_buff *skb)
 }
 
 #endif
-
 enum foe_cpu_reason {
 	TTL_0 = 0x02,		/* IPv4(IPv6) TTL(hop limit) = 0 */
 	/* IPv4(IPv6) has option(extension) header */
@@ -101,185 +104,222 @@ enum foe_cpu_reason {
 	HIT_PRE_BIND = 0x1A	/*  Pre-bind */
 };
 
-#define MAX_IF_NUM 64
-
-struct dmad_rx_descinfo4 {
-	uint32_t foe_entry_num:15;
-	uint32_t rsv0:3;
-	uint32_t CRSN:5;
-	uint32_t rsv1:3;
-	uint32_t SPORT:4;
-	uint32_t ppe:1;
-	uint32_t ALG:1;
-	uint32_t IF:8;
-	uint32_t WDMAID:2;
-	uint32_t RXID:2;
-	uint32_t WCID:10;
-	uint32_t BSSID:6;
-	uint32_t rsv3:4;
-	uint16_t minfo:1;
-	uint16_t ntype:3;
-	uint16_t chid:8;
-	uint16_t rsv4:4;
-	u16 MAGIC_TAG_PROTECT;
-} __packed;
+enum dst_port_num {
+	DP_RA0 = 11,
+#if defined(CONFIG_RT2860V2_AP_MBSS) || \
+defined(CONFIG_RTPCI_AP_MBSS) || defined(CONFIG_MBSS_SUPPORT)
+	DP_RA1 = 12,
+	DP_RA2 = 13,
+	DP_RA3 = 14,
+	DP_RA4 = 15,
+	DP_RA5 = 16,
+	DP_RA6 = 17,
+	DP_RA7 = 18,
+	DP_RA8 = 19,
+	DP_RA9 = 20,
+	DP_RA10 = 21,
+	DP_RA11 = 22,
+	DP_RA12 = 23,
+	DP_RA13 = 24,
+	DP_RA14 = 25,
+	DP_RA15 = 26,
+#endif				/* CONFIG_RT2860V2_AP_MBSS // */
+#if defined(CONFIG_RT2860V2_AP_WDS) || \
+defined(CONFIG_RTPCI_AP_WDS) || defined(CONFIG_WDS_SUPPORT)
+	DP_WDS0 = 27,
+	DP_WDS1 = 28,
+	DP_WDS2 = 29,
+	DP_WDS3 = 30,
+#endif				/* CONFIG_RT2860V2_AP_WDS // */
+#if defined(CONFIG_RT2860V2_AP_APCLI) || \
+defined(CONFIG_RTPCI_AP_APCLI) || defined(CONFIG_APCLI_SUPPORT)
+	DP_APCLI0 = 31,
+#endif				/* CONFIG_RT2860V2_AP_APCLI // */
+#if defined(CONFIG_RT2860V2_AP_MESH)
+	DP_MESH0 = 32,
+#endif				/* CONFIG_RT2860V2_AP_MESH // */
+	DP_RAI0 = 33,
+#if defined(CONFIG_RT3090_AP_MBSS) || defined(CONFIG_RT5392_AP_MBSS) || \
+defined(CONFIG_RT3572_AP_MBSS) || defined(CONFIG_RT5572_AP_MBSS) || \
+defined(CONFIG_RT5592_AP_MBSS) || defined(CONFIG_RT3593_AP_MBSS) || \
+defined(CONFIG_MT7610_AP_MBSS) || defined(CONFIG_RTPCI_AP_MBSS)  || \
+defined(CONFIG_MBSS_SUPPORT)
+	DP_RAI1 = 34,
+	DP_RAI2 = 35,
+	DP_RAI3 = 36,
+	DP_RAI4 = 37,
+	DP_RAI5 = 38,
+	DP_RAI6 = 39,
+	DP_RAI7 = 40,
+	DP_RAI8 = 41,
+	DP_RAI9 = 42,
+	DP_RAI10 = 43,
+	DP_RAI11 = 44,
+	DP_RAI12 = 45,
+	DP_RAI13 = 46,
+	DP_RAI14 = 47,
+	DP_RAI15 = 48,
+#endif				/* CONFIG_RTDEV_AP_MBSS // */
+#if defined(CONFIG_RT3090_AP_WDS) || defined(CONFIG_RT5392_AP_WDS) || \
+defined(CONFIG_RT3572_AP_WDS) || defined(CONFIG_RT5572_AP_WDS) || \
+defined(CONFIG_RT5592_AP_WDS) || defined(CONFIG_RT3593_AP_WDS) || \
+defined(CONFIG_MT7610_AP_WDS) || defined(CONFIG_WDS_SUPPORT)
+	DP_WDSI0 = 49,
+	DP_WDSI1 = 50,
+	DP_WDSI2 = 51,
+	DP_WDSI3 = 52,
+#endif				/* CONFIG_RTDEV_AP_WDS // */
+#if defined(CONFIG_RT3090_AP_APCLI) || defined(CONFIG_RT5392_AP_APCLI) || \
+defined(CONFIG_RT3572_AP_APCLI) || defined(CONFIG_RT5572_AP_APCLI) || \
+defined(CONFIG_RT5592_AP_APCLI) || defined(CONFIG_RT3593_AP_APCLI) || \
+defined(CONFIG_MT7610_AP_APCLI) || defined(CONFIG_APCLI_SUPPORT)
+	DP_APCLII0 = 53,
+#endif				/* CONFIG_RTDEV_AP_APCLI // */
+#if defined(CONFIG_RT3090_AP_MESH) || defined(CONFIG_RT5392_AP_MESH) || \
+defined(CONFIG_RT3572_AP_MESH) || defined(CONFIG_RT5572_AP_MESH) || \
+defined(CONFIG_RT5592_AP_MESH) || defined(CONFIG_RT3593_AP_MESH) || \
+defined(CONFIG_MT7610_AP_MESH)
+	DP_MESHI0 = 54,
+#endif				/* CONFIG_RTDEV_AP_MESH // */
+	MAX_WIFI_IF_NUM = 59,
+	DP_GMAC = 60,
+	DP_GMAC2 = 61,
+	DP_PCI = 62,
+	DP_USB = 63,
+	MAX_IF_NUM
+};
 
 struct pdma_rx_desc_info4 {
 	u16 MAGIC_TAG_PROTECT;
 	uint32_t foe_entry_num:14;
 	uint32_t CRSN:5;
 	uint32_t SPORT:4;
-	uint32_t rsv:6;
-	uint32_t foe_entry_num_1:1;
-	uint32_t ppe:1;
 	uint32_t ALG:1;
-	uint32_t IF:8;
-	uint32_t WDMAID:2;
-	uint32_t RXID:2;
-	uint32_t WCID:10;
-	uint32_t BSSID:6;
-	uint32_t rsv2:4;
-	uint16_t minfo:1;
-	uint16_t ntype:3;
-	uint16_t chid:8;
-	uint16_t rsv3:4;
+	uint16_t IF:8;
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+	u8 WDMAID;
+	uint16_t RXID:2;
+	uint16_t WCID:8;
+	uint16_t BSSID:6;
+#endif
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
 	u16 SOURCE;
 	u16 DEST;
 #endif
 } __packed;
 
-#if defined(CONFIG_MEDIATEK_NETSYS_V2)
 struct head_rx_descinfo4 {
 	uint32_t foe_entry_num:14;
 	uint32_t CRSN:5;
 	uint32_t SPORT:4;
-	uint32_t rsv:6;
-	uint32_t foe_entry_num_1:1;
-	uint32_t ppe:1;
 	uint32_t ALG:1;
 	uint32_t IF:8;
-	uint32_t WDMAID:2;
-	uint32_t RXID:2;
-	uint32_t WCID:10;
-	uint32_t BSSID:6;
-	uint32_t rsv2:4;
-	uint16_t minfo:1;
-	uint16_t ntype:3;
-	uint16_t chid:8;
-	uint16_t rsv3:4;
-#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
-	u16 SOURCE;
-	u16 DEST;
-#endif
 	u16 MAGIC_TAG_PROTECT;
-} __packed;
-#else
-struct head_rx_descinfo4 {
-	uint32_t foe_entry_num:14;
-	uint32_t CRSN:5;
-	uint32_t SPORT:3;
-	uint32_t rsv:1;
-	uint32_t ALG:1;
-	uint32_t IF:4;
-	uint32_t rsv2:4;
-	uint32_t MAGIC_TAG_PROTECT: 16;
-	uint32_t WDMAID:2;
-	uint32_t RXID:2;
-	uint32_t WCID:10;
-	uint32_t BSSID:6;
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+	u8 WDMAID;
+	uint16_t RXID:2;
+	uint16_t WCID:8;
+	uint16_t BSSID:6;
+#endif
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
 	u16 SOURCE;
 	u16 DEST;
 #endif
 } __packed;
-#endif
 
 struct cb_rx_desc_info4 {
 	u16 MAGIC_TAG_PROTECT0;
-	uint32_t foe_entry_num:15;
+	uint32_t foe_entry_num:14;
 	uint32_t CRSN:5;
 	uint32_t SPORT:4;
 	uint32_t ALG:1;
-	uint32_t rsv:7;
-	uint16_t IF:8;
-	uint16_t WDMAID:2;
+	uint32_t IF:8;
+	u16 MAGIC_TAG_PROTECT1;
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+	u8 WDMAID;
 	uint16_t RXID:2;
-	uint16_t WCID:10;
+	uint16_t WCID:8;
 	uint16_t BSSID:6;
-	uint16_t rsv1:4;
-	uint16_t minfo:1;
-	uint16_t ntype:3;
-	uint16_t chid:8;
-	uint16_t rsv2:4;
+#endif
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
 	u16 SOURCE;
 	u16 DEST;
 #endif
-	u16 MAGIC_TAG_PROTECT1;
 } __packed;
+#ifndef NEXTHDR_IPIP
+#define NEXTHDR_IPIP 4
+#endif
+/*!MT7622*/
+/*    2bytes	    4bytes          */
+/* +-----------+-------------------+*/
+/* | Magic Tag | RX/TX Desc info4  |*/
+/* +-----------+-------------------+*/
+/* |<------FOE Flow Info---------->|*/
 
+/*MT7622*/
+/*      2bytes	    4bytes	    3bytes        */
+/*   +-----------+--------------------+---------+ */
+/*   |  Magic Tag | RX/TX Desc info4  |wifi info |*/
+/*   +-----------|--------------------+---------+ */
+/*   |<-----------FOE Flow Info----------------->|*/
 
-
-#define FOE_INFO_LEN		    12
-#define WIFI_INFO_LEN		    6
-
-
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+#define WIFI_INFO_LEN		    3
+#else
+#define WIFI_INFO_LEN		    0
+#endif
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
-#define FOE_INFO_LEN		    (6 + 4 + WIFI_INFO_LEN)
+#define FOE_INFO_LEN		    (10 + WIFI_INFO_LEN)
 #define FOE_MAGIC_FASTPATH	    0x77
 #define FOE_MAGIC_L2TPPATH	    0x78
+#else
+#define FOE_INFO_LEN		    (6 + WIFI_INFO_LEN)
 #endif
 
 #define FOE_MAGIC_PCI		    0x73
 #define FOE_MAGIC_WLAN		    0x74
 #define FOE_MAGIC_GE		    0x75
 #define FOE_MAGIC_PPE		    0x76
-#define FOE_MAGIC_WED0		    0x78
-#define FOE_MAGIC_WED1		    0x79
-#define FOE_MAGIC_MED		    0x80
-#define FOE_MAGIC_EDMA0		    0x81
-#define FOE_MAGIC_EDMA1		    0x82
 #define TAG_PROTECT                 0x6789
 #define USE_HEAD_ROOM               0
 #define USE_TAIL_ROOM               1
 #define USE_CB                      2
-#define ALL_INFO_ERROR              3
+#define ALL_INFO_ERROR                   3
 
-/**************************DMAD FORMAT********************************/
 #define FOE_TAG_PROTECT(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->MAGIC_TAG_PROTECT)
-
+	(((struct head_rx_descinfo4 *)((skb)->head))->MAGIC_TAG_PROTECT)
 #define FOE_ENTRY_NUM(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->foe_entry_num)
+	(((struct head_rx_descinfo4 *)((skb)->head))->foe_entry_num)
 #define FOE_ALG(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->ALG)
+	(((struct head_rx_descinfo4 *)((skb)->head))->ALG)
 #define FOE_AI(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->CRSN)
+	(((struct head_rx_descinfo4 *)((skb)->head))->CRSN)
 #define FOE_SP(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->SPORT)
+	(((struct head_rx_descinfo4 *)((skb)->head))->SPORT)
 #define FOE_MAGIC_TAG(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->IF)
+	(((struct head_rx_descinfo4 *)((skb)->head))->IF)
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
 #define FOE_WDMA_ID(skb)  \
-	(((struct dmad_rx_descinfo4 *)((skb)->head))->WDMAID)
-#define FOE_RX_ID(skb)	(((struct dmad_rx_descinfo4 *)((skb)->head))->RXID)
-#define FOE_WC_ID(skb)	(((struct dmad_rx_descinfo4 *)((skb)->head))->WCID)
-#define FOE_BSS_ID(skb)	(((struct dmad_rx_descinfo4 *)((skb)->head))->BSSID)
-#define FOE_PPE(skb)	(((struct dmad_rx_descinfo4 *)((skb)->head))->ppe)
+	(((struct head_rx_descinfo4 *)((skb)->head))->WDMAID)
+#define FOE_RX_ID(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->RXID)
+#define FOE_WC_ID(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->WCID)
+#define FOE_BSS_ID(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->BSSID)
+#endif
+#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
+#define FOE_SOURCE(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->SOURCE)
+#define FOE_DEST(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->DEST)
+#endif
 
-/***********************HEAD FORMAT*************************************/
+#define IS_SPACE_AVAILABLED_HEAD(skb)  \
+	((((skb_headroom(skb) >= FOE_INFO_LEN) ? 1 : 0)))
+#define IS_SPACE_AVAILABLE_HEAD(skb)  \
+	((((skb_headroom(skb) >= FOE_INFO_LEN) ? 1 : 0)))
+#define FOE_INFO_START_ADDR_HEAD(skb)	(skb->head)
 
 #define FOE_TAG_PROTECT_HEAD(skb)  \
 	(((struct head_rx_descinfo4 *)((skb)->head))->MAGIC_TAG_PROTECT)
-#define FOE_ENTRY_NUM_LSB_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->foe_entry_num)
-#define FOE_ENTRY_NUM_MSB_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->foe_entry_num_1)
-
 #define FOE_ENTRY_NUM_HEAD(skb)  \
-	(((FOE_ENTRY_NUM_MSB_HEAD(skb) & 0x1) << 14) | FOE_ENTRY_NUM_LSB_HEAD(skb))
-
-
+	(((struct head_rx_descinfo4 *)((skb)->head))->foe_entry_num)
 #define FOE_ALG_HEAD(skb)  \
 	(((struct head_rx_descinfo4 *)((skb)->head))->ALG)
 #define FOE_AI_HEAD(skb)  \
@@ -289,7 +329,7 @@ struct cb_rx_desc_info4 {
 #define FOE_MAGIC_TAG_HEAD(skb)  \
 	(((struct head_rx_descinfo4 *)((skb)->head))->IF)
 
-
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
 #define FOE_WDMA_ID_HEAD(skb)  \
 	(((struct head_rx_descinfo4 *)((skb)->head))->WDMAID)
 #define FOE_RX_ID_HEAD(skb)  \
@@ -298,19 +338,43 @@ struct cb_rx_desc_info4 {
 	(((struct head_rx_descinfo4 *)((skb)->head))->WCID)
 #define FOE_BSS_ID_HEAD(skb)  \
 	(((struct head_rx_descinfo4 *)((skb)->head))->BSSID)
-#define FOE_PPE_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->PPE)
+#endif
 
-/****************************TAIL FORMAT***************************************/
+#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
+#define FOE_SOURCE_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->SOURCE)
+#define FOE_DEST_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->DEST)
+#endif
+
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+#define FOE_WDMA_ID_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->WDMAID)
+#define FOE_RX_ID_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->RXID)
+#define FOE_WC_ID_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->WCID)
+#define FOE_BSS_ID_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->BSSID)
+#endif
+
+#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
+#define FOE_SOURCE_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->SOURCE)
+#define FOE_DEST_HEAD(skb)  \
+	(((struct head_rx_descinfo4 *)((skb)->head))->DEST)
+#endif
+#define IS_SPACE_AVAILABLED_TAIL(skb)  \
+	(((skb_tailroom(skb) >= FOE_INFO_LEN) ? 1 : 0))
+#define IS_SPACE_AVAILABLE_TAIL(skb)  \
+	(((skb_tailroom(skb) >= FOE_INFO_LEN) ? 1 : 0))
+#define FOE_INFO_START_ADDR_TAIL(skb)  \
+	((unsigned char *)(long)(skb_end_pointer(skb) - FOE_INFO_LEN))
+
 #define FOE_TAG_PROTECT_TAIL(skb)  \
 	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->MAGIC_TAG_PROTECT)
-#define FOE_ENTRY_NUM_LSB_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->foe_entry_num)
-
-#define FOE_ENTRY_NUM_MSB_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->foe_entry_num_1)
 #define FOE_ENTRY_NUM_TAIL(skb)  \
-	(((FOE_ENTRY_NUM_MSB_TAIL(skb) & 0x1) << 14) | FOE_ENTRY_NUM_LSB_TAIL(skb))
+	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->foe_entry_num)
 #define FOE_ALG_TAIL(skb)  \
 	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->ALG)
 #define FOE_AI_TAIL(skb)  \
@@ -320,77 +384,22 @@ struct cb_rx_desc_info4 {
 #define FOE_MAGIC_TAG_TAIL(skb)  \
 	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->IF)
 
-#define FOE_WDMA_ID_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->WDMAID)
-#define FOE_RX_ID_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->RXID)
-#define FOE_WC_ID_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->WCID)
-#define FOE_BSS_ID_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->BSSID)
-
-#define FOE_PPE_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->ppe)
-/*********************************************************************/
-#define FOE_WDMA_ID_CB(skb)  \
-	(((struct cb_rx_desc_info4 *)((skb)->head))->WDMAID)
-#define FOE_RX_ID_CB(skb)  \
-	(((struct cb_rx_desc_info4 *)((skb)->head))->RXID)
-#define FOE_WC_ID_CB(skb)  \
-	(((struct cb_rx_desc_info4 *)((skb)->head))->WCID)
-#define FOE_BSS_ID_CB(skb)  \
-	(((struct cb_rx_desc_info4 *)((skb)->head))->BSSID)
-
-#define FOE_MINFO(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->minfo)
-#define FOE_MINFO_NTYPE(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->ntype)
-#define FOE_MINFO_CHID(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->chid)
-#define FOE_MINFO_HEAD(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->minfo)
-#define FOE_MINFO_NTYPE_HEAD(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->ntype)
-#define FOE_MINFO_CHID_HEAD(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->chid)
-
-#define FOE_MINFO_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->minfo)
-#define FOE_MINFO_NTYPE_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->ntype)
-#define FOE_MINFO_CHID_TAIL(skb)  \
-	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->chid)
-
-#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
-#define FOE_SOURCE(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->SOURCE)
-#define FOE_DEST(skb)	(((struct head_rx_descinfo4 *)((skb)->head))->DEST)
-#endif
-
-#define IS_SPACE_AVAILABLE_HEAD(skb)  \
-	((((skb_headroom(skb) >= FOE_INFO_LEN) ? 1 : 0)))
-#define IS_SPACE_AVAILABLE_HEAD(skb)  \
-	((((skb_headroom(skb) >= FOE_INFO_LEN) ? 1 : 0)))
-#define FOE_INFO_START_ADDR_HEAD(skb)	(skb->head)
-
-#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
-#define FOE_SOURCE_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->SOURCE)
-#define FOE_DEST_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->DEST)
-#endif
-
-#if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
-#define FOE_SOURCE_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->SOURCE)
-#define FOE_DEST_HEAD(skb)  \
-	(((struct head_rx_descinfo4 *)((skb)->head))->DEST)
-#endif
-#define IS_SPACE_AVAILABLE_TAIL(skb)  \
-	(((skb_tailroom(skb) >= FOE_INFO_LEN) ? 1 : 0))
-#define IS_SPACE_AVAILABLE_TAIL(skb)  \
-	(((skb_tailroom(skb) >= FOE_INFO_LEN) ? 1 : 0))
-#define FOE_INFO_START_ADDR_TAIL(skb)  \
-	((unsigned char *)(long)(skb_end_pointer(skb) - FOE_INFO_LEN))
-
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
 #define FOE_SOURCE_TAIL(skb)  \
 	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->SOURCE)
 #define FOE_DEST_TAIL(skb)  \
 	(((struct pdma_rx_desc_info4 *)((long)((skb_end_pointer(skb)) - FOE_INFO_LEN)))->DEST)
+#endif
+
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+#define FOE_WDMA_ID_TAIL(skb)  \
+	(((struct pdma_rx_desc_info4 *)((skb)->head))->WDMAID)
+#define FOE_RX_ID_TAIL(skb)  \
+	(((struct pdma_rx_desc_info4 *)((skb)->head))->RXID)
+#define FOE_WC_ID_TAIL(skb)  \
+	(((struct pdma_rx_desc_info4 *)((skb)->head))->WCID)
+#define FOE_BSS_ID_TAIL(skb)  \
+	(((struct pdma_rx_desc_info4 *)((skb)->head))->BSSID)
 #endif
 
 /* change the position of skb_CB if necessary */
@@ -415,6 +424,18 @@ struct cb_rx_desc_info4 {
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
 #define FOE_SOURCE_CB(skb)	(((struct cb_rx_desc_info4 *)((skb)->cb + CB_OFFSET))->SOURCE)
 #define FOE_DEST_CB(skb)	(((struct cb_rx_desc_info4 *)((skb)->cb + CB_OFFSET))->DEST)
+#endif
+
+
+#if defined(CONFIG_ARCH_MT7622_WIFI_HW_NAT)
+#define FOE_WDMA_ID_CB(skb)  \
+	(((struct cb_rx_desc_info4 *)((skb)->head))->WDMAID)
+#define FOE_RX_ID_CB(skb)  \
+	(((struct cb_rx_desc_info4 *)((skb)->head))->RXID)
+#define FOE_WC_ID_CB(skb)  \
+	(((struct cb_rx_desc_info4 *)((skb)->head))->WCID)
+#define FOE_BSS_ID_CB(skb)  \
+	(((struct cb_rx_desc_info4 *)((skb)->head))->BSSID)
 #endif
 
 #define IS_MAGIC_TAG_PROTECT_VALID_HEAD(skb)  \
@@ -460,7 +481,7 @@ static inline void hwnat_set_l2tp_unhit(struct iphdr *iph, struct sk_buff *skb)
 #if defined(CONFIG_RA_HW_NAT_PPTP_L2TP)
 	/* only clear headeroom for TCP OR not L2TP packets */
 	if ((iph->protocol == 0x6) || (ntohs(udp_hdr(skb)->dest) != 1701)) {
-		if (IS_SPACE_AVAILABLE_HEAD(skb)) {
+		if (IS_SPACE_AVAILABLED_HEAD(skb)) {
 			FOE_MAGIC_TAG(skb) = 0;
 			FOE_AI(skb) = UN_HIT;
 		}
@@ -483,60 +504,53 @@ static inline void hwnat_clear_l2tp_fast_path(u32 l2tp_fast_path)
 #endif
 }
 
-/* #define CONFIG_HW_NAT_IPI */
-#if defined(CONFIG_HW_NAT_IPI)
-extern int debug_level;
-int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
-		struct rps_dev_flow **rflowp);
-uint32_t ppe_extif_rx_handler(struct sk_buff *skb);
-int hitbind_force_to_cpu_handler(struct sk_buff *skb, struct foe_entry *entry);
-extern unsigned int ipidbg[num_possible_cpus()][10];
-extern unsigned int ipidbg2[num_possible_cpus()][10];
-/* #define HNAT_IPI_RXQUEUE	1 */
+//#define CONFIG_HW_NAT_IPI
+#if defined (CONFIG_HW_NAT_IPI)
+//#define HNAT_IPI_RXQUEUE	1
 #define HNAT_IPI_DQ		1
 #define HNAT_IPI_HASH_NORMAL	0
 #define HNAT_IPI_HASH_VTAG		1
 #define HNAT_IPI_HASH_FROM_EXTIF	2
 #define HNAT_IPI_HASH_FROM_GMAC		4
 
-struct hnat_ipi_s {
-#if defined(HNAT_IPI_DQ)
-	struct sk_buff_head     skb_input_queue;
-	struct sk_buff_head     skb_process_queue;
-#elif defined(HNAT_IPI_RXQUEUE)
-	atomic_t rx_queue_num;
-	unsigned int rx_queue_ridx;
-	unsigned int rx_queue_widx;
-	struct sk_buff **rx_queue;
+typedef struct {
+#if defined (HNAT_IPI_DQ)
+	struct sk_buff_head     skbInputQueue;
+	struct sk_buff_head     skbProcessQueue;
+#elif defined (HNAT_IPI_RXQUEUE)
+	atomic_t RxQueueNum;
+	unsigned int RxQueueRIdx;
+	unsigned int RxQueueWIdx;
+	struct sk_buff** RxQueue;
 #else
-	/* unsigned int dummy0[0]; */
-	struct sk_buff_head     skb_ipi_queue;
-	/* unsigned int dummy1[8]; */
+	//unsigned int dummy0[0];
+	struct sk_buff_head     skbIpiQueue;
+	//unsigned int dummy1[8];
 #endif
 	unsigned long time_rec, recv_time;
 	unsigned int ipi_accum;
-	/*hwnat ipi use*/
-	spinlock_t      ipilock;
+	spinlock_t      ipilock;	
 	struct tasklet_struct smp_func_call_tsk;
-} ____cacheline_aligned_in_smp;
+} ____cacheline_aligned_in_smp hnat_ipi_s;
 
-struct hnat_ipi_stat {
-	unsigned long drop_pkt_num_from_extif;
-	unsigned long drop_pkt_num_from_ppehit;
+
+typedef struct {
+	unsigned long dropPktNum_from_extif;
+	unsigned long dropPktNum_from_ppehit;
 	unsigned int smp_call_cnt_from_extif;
 	unsigned int smp_call_cnt_from_ppehit;
 	atomic_t cpu_status;
-	/* atomic_t cpu_status_from_extif; */
-	/* atomic_t cpu_status_from_ppehit; */
+	//atomic_t cpu_status_from_extif;
+	//atomic_t cpu_status_from_ppehit;
+	
+	//atomic_t hook_status_from_extif;
+	//atomic_t hook_status_from_ppehit;
+} ____cacheline_aligned_in_smp hnat_ipi_stat;
 
-	/* atomic_t hook_status_from_extif; */
-	/* atomic_t hook_status_from_ppehit; */
-} ____cacheline_aligned_in_smp;
+#define cpu_status_from_extif 	cpu_status
+#define cpu_status_from_ppehit 	cpu_status
 
-#define cpu_status_from_extif	cpu_status
-#define cpu_status_from_ppehit	cpu_status
-
-struct hnat_ipi_cfg {
+typedef struct {
 	unsigned int enable_from_extif;
 	unsigned int enable_from_ppehit;
 	unsigned int queue_thresh_from_extif;
@@ -545,14 +559,9 @@ struct hnat_ipi_cfg {
 	unsigned int drop_pkt_from_ppehit;
 	unsigned int ipi_cnt_mod_from_extif;
 	unsigned int ipi_cnt_mod_from_ppehit;
-} ____cacheline_aligned_in_smp;
-
-int hnat_ipi_init(void);
-int hnat_ipi_de_init(void);
+} ____cacheline_aligned_in_smp hnat_ipi_cfg;
+int HnatIPIInit(void);
+int HnatIPIDeInit(void);
 #endif
-
-#define QDMA_RX		5
-#define PDMA_RX		0
-
 
 #endif

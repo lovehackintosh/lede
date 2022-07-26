@@ -134,17 +134,36 @@ endef
 
 $(eval $(call KernelPackage,sound-mt7620))
 
-define KernelPackage/mtk-hnat
+define KernelPackage/ramips_hnat
   SUBMENU:=Network Devices
-  TITLE:=MediaTek MT762x HW NAT driver
-  DEPENDS:=@TARGET_ramips @TARGET_ramips_mt7621 +kmod-nf-flow
+  TITLE:=ramips HNAT module
+  DEPENDS:=@TARGET_ramips +kmod-nf-conntrack
   KCONFIG:= \
 	CONFIG_BRIDGE_NETFILTER=y \
-	CONFIG_NET_MEDIATEK_HNAT \
-	CONFIG_NETFILTER_FAMILY_BRIDGE=y
+	CONFIG_NETFILTER_FAMILY_BRIDGE=y 
   FILES:= \
-	$(LINUX_DIR)/drivers/net/ethernet/mtk/mtk_hnat/mtkhnat.ko
-  AUTOLOAD:=$(call AutoLoad,55,mtkhnat)
+        $(LINUX_DIR)/drivers/net/ethernet/mediateksdk/mtk_hnat/mtkhnat.ko
 endef
 
-$(eval $(call KernelPackage,mtk-hnat))
+define KernelPackage/ramips_hnat/description
+  Kernel modules for ramips HW NAT offloading
+endef
+
+$(eval $(call KernelPackage,ramips_hnat))
+
+define KernelPackage/gsw150
+  SUBMENU:=Other modules
+  TITLE:=Intel gsw150 switch driver
+  DEPENDS:=@TARGET_ramips
+  KCONFIG:= \
+	CONFIG_GSW150_SUPPORT
+  FILES:= \
+	$(LINUX_DIR)/drivers/net/phy/intel/gsw150/gsw150.ko
+  AUTOLOAD:=$(call AutoLoad,25,gsw150,1)
+endef
+
+define KernelPackage/gsw150/description
+ Phy modules for intel gsw150 switch driver.
+endef
+
+$(eval $(call KernelPackage,gsw150))
