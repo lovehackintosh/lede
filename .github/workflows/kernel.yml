@@ -1,0 +1,16 @@
+name: Build Kernel
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/kernel-reusable.yml'
+      - '.github/workflows/kernel.yml'
+      - 'include/kernel-5.10'
+      - 'package/kernel/**'
+      - 'target/linux/**'
+      - '!target/linux/**/*-5.15'
+jobs:
+  build_kernel:
+    uses: ./.github/workflows/kernel-reusable.yml
+    with:
+      config_seed: 'CONFIG_ALL_KMODS=y\n'
