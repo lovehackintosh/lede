@@ -47,7 +47,7 @@ endef
 
 PKG_CONFIG_PATH:=
 
-export HOST_EXTRACFLAGS=-I$(STAGING_DIR_HOST)/include
+export HOST_EXTRACFLAGS=-I$(STAGING_DIR_HOST)/include -Ofast -pipe
 
 KERNEL_MAKE := \
 	$(MAKE) -C $(PKG_BUILD_DIR) \

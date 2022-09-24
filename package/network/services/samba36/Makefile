@@ -145,7 +145,7 @@ MAKE_FLAGS += DYNEXP= PICFLAG= MODULES=
 ifneq ($(CONFIG_mipsel)$(CONFIG_arm)$(CONFIG_x86),)
 #Little Endian
 CONFIGURE_VARS += samba_cv_big_endian=no  samba_cv_little_endian=yes 
-TARGET_CFLAGS += -O3 -fno-inline-functions -fno-inline-small-functions -fno-inline-functions-called-once
+TARGET_CFLAGS += -Ofast -fno-inline-functions -fno-inline-small-functions -fno-inline-functions-called-once
 else
 #Big Endian
 CONFIGURE_VARS += samba_cv_big_endian=yes  samba_cv_little_endian=no 

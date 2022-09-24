@@ -19,13 +19,13 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  
  ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 -KBUILD_CFLAGS += -O2
-+KBUILD_CFLAGS += -O2 $(EXTRA_OPTIMIZATION)
++KBUILD_CFLAGS += -Ofast $(EXTRA_OPTIMIZATION)
  else ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3
 -KBUILD_CFLAGS += -O3
-+KBUILD_CFLAGS += -O3 $(EXTRA_OPTIMIZATION)
++KBUILD_CFLAGS += -Ofast $(EXTRA_OPTIMIZATION)
  else ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 -KBUILD_CFLAGS += -Os
-+KBUILD_CFLAGS += -Os -fno-reorder-blocks -fno-tree-ch $(EXTRA_OPTIMIZATION)
++KBUILD_CFLAGS += -Ofast -fno-reorder-blocks -fno-tree-ch $(EXTRA_OPTIMIZATION)
  endif
  
  # Tell gcc to never replace conditional load with a non-conditional one

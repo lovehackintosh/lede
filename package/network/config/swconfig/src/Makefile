@@ -1,5 +1,5 @@
 ifndef CFLAGS
-CFLAGS = -O2 -g -I ../src
+CFLAGS = -Ofast -I ../src
 endif
 LIBS=-lnl -lnl-genl
 

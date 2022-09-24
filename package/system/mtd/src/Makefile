@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS += -Wall
+CFLAGS += -Wall -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc
 LDFLAGS += -lubox
 
 obj = mtd.o jffs2.o crc32.o md5.o

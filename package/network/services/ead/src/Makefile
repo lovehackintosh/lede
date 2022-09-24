@@ -1,6 +1,6 @@
 CC       = gcc
 CPPFLAGS = -I. -Itinysrp
-CFLAGS   = -Os -Wall
+CFLAGS   = -Ofast -Wall
 LDFLAGS	 =
 LIBS_EADCLIENT = tinysrp/libtinysrp.a
 LIBS_EAD = tinysrp/libtinysrp.a -lpcap

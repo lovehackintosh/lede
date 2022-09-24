@@ -56,7 +56,6 @@ endef
 
 define Package/procd-selinux
   $(call Package/procd/Default)
-  DEPENDS += +libselinux
   TITLE += with SELinux support
   PROVIDES:=procd
   VARIANT:=selinux
@@ -87,7 +86,7 @@ endef
 
 define Package/procd/config
 menu "Configuration"
-	depends on PACKAGE_procd || PACKAGE_procd-selinux
+	depends on PACKAGE_procd
 
 config PROCD_SHOW_BOOT
 	bool

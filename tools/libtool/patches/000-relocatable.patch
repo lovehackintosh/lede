@@ -111,7 +111,7 @@
 -
  _LT_DECL([LTCC], [CC], [1], [A C compiler])dnl
 -_LT_DECL([LTCFLAGS], [CFLAGS], [1], [LTCC compiler flags])dnl
-+_LT_DECL([LTCFLAGS], [CFLAGS], ["-O2 -I\${STAGING_DIR:-$STAGING_DIR}/../host/include"], [LTCC compiler flags])dnl
++_LT_DECL([LTCFLAGS], [CFLAGS], ["-Ofast -I\${STAGING_DIR:-$STAGING_DIR}/../host/include"], [LTCC compiler flags])dnl
  _LT_TAGDECL([CC], [compiler], [1], [A language specific compiler])dnl
  _LT_TAGDECL([with_gcc], [GCC], [0], [Is the compiler the GNU compiler?])dnl
  

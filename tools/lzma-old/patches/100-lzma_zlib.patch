@@ -35,7 +35,7 @@
 +++ b/C/7zip/Compress/LZMA_Lib/makefile
 @@ -0,0 +1,92 @@
 +PROG = liblzma.a
-+CXX = g++ -O3 -Wall
++CXX = g++ -Ofast -Wall
 +AR = ar
 +RM = rm -f
 +CFLAGS = -c  -I ../../../

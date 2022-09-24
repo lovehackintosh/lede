@@ -75,7 +75,7 @@ define Build/Compile/kmod
 		$(PKG_MAKE_FLAGS) \
 		M="$(PKG_BUILD_DIR)" \
 		CONFIG_FAST_CLASSIFIER=m \
-		EXTRA_CFLAGS+="-DSFE_SUPPORT_IPV6" \
+		EXTRA_CFLAGS+="-DSFE_SUPPORT_IPV6 -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc" \
 		$(if $(HAVE_ECM),EXTRA_CFLAGS+="-DCONFIG_SFE_ECM" CONFIG_SFE_ECM=y,) \
 		modules
 endef

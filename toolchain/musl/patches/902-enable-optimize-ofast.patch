@@ -1,0 +1,31 @@
+--- a/Makefile
++++ b/Makefile
+@@ -38,12 +38,12 @@ GENH = obj/include/bits/alltypes.h obj/i
+ GENH_INT = obj/src/internal/version.h
+ IMPH = $(addprefix $(srcdir)/, src/internal/stdio_impl.h src/internal/pthread_impl.h src/internal/locale_impl.h src/internal/libc.h)
+ 
+-LDFLAGS =
+-LDFLAGS_AUTO =
++LDFLAGS = -Ofast
++LDFLAGS_AUTO = -Ofast
+ LIBCC = -lgcc
+-CPPFLAGS =
+-CFLAGS =
+-CFLAGS_AUTO = -Os -pipe
++CPPFLAGS = -Ofast
++CFLAGS = -Ofast
++CFLAGS_AUTO = -Ofast -pipe
+ CFLAGS_C99FSE = -std=c99 -ffreestanding -nostdinc 
+ 
+ CFLAGS_ALL = $(CFLAGS_C99FSE)
+--- a/configure
++++ b/configure
+@@ -436,7 +436,7 @@ xno|x) printf "disabled\n" ; optimize=no
+ *) printf "custom\n" ;;
+ esac
+ 
+-test "$optimize" = no || tryflag CFLAGS_AUTO -Os || tryflag CFLAGS_AUTO -O2
++test "$optimize" = no || tryflag CFLAGS_AUTO -Ofast || tryflag CFLAGS_AUTO -Ofast
+ test "$optimize" = yes && optimize="internal,malloc,string"
+ 
+ if fnmatch 'no|size' "$optimize" ; then :

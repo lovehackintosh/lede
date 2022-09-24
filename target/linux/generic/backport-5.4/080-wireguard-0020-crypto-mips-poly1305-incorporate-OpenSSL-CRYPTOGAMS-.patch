@@ -40,7 +40,7 @@ Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 @@ -8,3 +8,17 @@ obj-$(CONFIG_CRYPTO_CRC32_MIPS) += crc32
  obj-$(CONFIG_CRYPTO_CHACHA_MIPS) += chacha-mips.o
  chacha-mips-y := chacha-core.o chacha-glue.o
- AFLAGS_chacha-core.o += -O2 # needed to fill branch delay slots
+ AFLAGS_chacha-core.o += -Ofast # needed to fill branch delay slots
 +
 +obj-$(CONFIG_CRYPTO_POLY1305_MIPS) += poly1305-mips.o
 +poly1305-mips-y := poly1305-core.o poly1305-glue.o

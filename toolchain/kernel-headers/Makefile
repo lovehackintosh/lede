@@ -45,7 +45,7 @@ ifeq ($(strip $(BOARD)),uml)
   LINUX_KARCH:=$(subst x86_64,x86,$(subst i386,x86,$(ARCH)))
 endif
 
-HOST_EXTRACFLAGS=
+HOST_EXTRACFLAGS=-Ofast -pipe
 
 LINUX_HAS_HEADERS_INSTALL:=y
 

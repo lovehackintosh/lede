@@ -961,7 +961,7 @@ Index: lzma-4.65/CPP/7zip/Compress/LZMA_Alone/makefile.gcc
  LIB = -lm
  RM = rm -f
 -CFLAGS = -c -D_FILE_OFFSET_BITS=64
-+CFLAGS = -c -I ../../../ -D_FILE_OFFSET_BITS=64 -DPACKAGE_VERSION="\"4.32.0beta3\""
++CFLAGS = -c -I ../../../ -D_FILE_OFFSET_BITS=64 -DPACKAGE_VERSION="\"4.32.0beta3\"" -Ofast
  
  ifdef SystemDrive
  IS_MINGW = 1

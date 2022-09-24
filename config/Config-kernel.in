@@ -1027,7 +1027,7 @@ config KERNEL_SECCOMP
 	bool "Enable seccomp support"
 		depends on !(TARGET_uml)
 		select KERNEL_SECCOMP_FILTER
-		default y if !SMALL_FLASH
+		default n
 		help
 		  Build kernel with support for seccomp.
 
@@ -1257,7 +1257,7 @@ config KERNEL_SQUASHFS_XATTR
 #
 choice
 	prompt "Compiler optimization level"
-	default KERNEL_CC_OPTIMIZE_FOR_SIZE if SMALL_FLASH
+	default KERNEL_CC_OPTIMIZE_FOR_PERFORMANCE if SMALL_FLASH
 
 config KERNEL_CC_OPTIMIZE_FOR_PERFORMANCE
 	bool "Optimize for performance"
@@ -1276,9 +1276,11 @@ endchoice
 
 config KERNEL_AUDIT
 	bool "Auditing support"
+	default n
 
 config KERNEL_SECURITY
 	bool "Enable different security models"
+	default n
 
 config KERNEL_SECURITY_NETWORK
 	bool "Socket and Networking Security Hooks"
@@ -1286,13 +1288,14 @@ config KERNEL_SECURITY_NETWORK
 
 config KERNEL_SECURITY_SELINUX
 	bool "NSA SELinux Support"
+	default n
 	select KERNEL_SECURITY_NETWORK
 	select KERNEL_AUDIT
 
 config KERNEL_SECURITY_SELINUX_BOOTPARAM
 	bool "NSA SELinux boot parameter"
 	depends on KERNEL_SECURITY_SELINUX
-	default y
+	default n
 
 config KERNEL_SECURITY_SELINUX_DISABLE
 	bool "NSA SELinux runtime disable"
@@ -1301,7 +1304,7 @@ config KERNEL_SECURITY_SELINUX_DISABLE
 config KERNEL_SECURITY_SELINUX_DEVELOP
 	bool "NSA SELinux Development Support"
 	depends on KERNEL_SECURITY_SELINUX
-	default y
+	default n
 
 config KERNEL_SECURITY_SELINUX_SIDTAB_HASH_BITS
 	int

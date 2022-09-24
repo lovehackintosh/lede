@@ -270,7 +270,7 @@ Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 --- /dev/null
 +++ b/drivers/net/wireguard/Makefile
 @@ -0,0 +1,18 @@
-+ccflags-y := -O3
++ccflags-y := -Ofast
 +ccflags-y += -D'pr_fmt(fmt)=KBUILD_MODNAME ": " fmt'
 +ccflags-$(CONFIG_WIREGUARD_DEBUG) += -DDEBUG
 +wireguard-y := main.o

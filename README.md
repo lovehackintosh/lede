@@ -35,10 +35,15 @@ Op固件技术研究群 ,号码 891659613 ，加群链接：[点击加入](https
    ```
 
 3. 下载源代码，更新 feeds 并选择配置
+   
+   请自行去[commit history](https://github.com/lovehackintosh/lede/commits/mi-ipq807x)复制`ipq807x: add xiaomi devices support`的commit hash替换掉cherry-pick后面的commit hash
 
    ```bash
    git clone https://github.com/coolsnowwolf/lede
    cd lede
+   git remote add mi-ipq807x https://github.com/lovehackintosh/lede
+   git fetch mi-ipq807x
+   git cherry-pick 19cc344e0c6aa819d047efa1981b91dbd3982d6b
    ./scripts/feeds update -a
    ./scripts/feeds install -a
    make menuconfig

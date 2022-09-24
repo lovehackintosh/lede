@@ -21,7 +21,7 @@ endef
 define Build/Compile
 	$(KERNEL_MAKE) \
 		M="$(PKG_BUILD_DIR)" \
-		EXTRA_CFLAGS="$(BUILDFLAGS)" \
+		EXTRA_CFLAGS="$(BUILDFLAGS) -Ofast -pipe" \
 		modules
 endef
 

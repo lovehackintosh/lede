@@ -4,7 +4,7 @@
  
 -CC = gcc
 -CFLAGS = -I. -fPIC -O -g -Wall -Werror -Wno-unused-variable -Wno-unused-parameter
-+CFLAGS += -I.
++CFLAGS += -I. -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc
  
  COMMON_PROG_OBJS = \
  	call_qcsapi.o	\

@@ -37,7 +37,7 @@ Signed-off-by: Jo-Philipp Wich <jo@mein.io>
  INCLUDE_DIRS= -I../include
  
 -COMPILE_FLAGS= -DHAVE_PATHS_H -DIPX_CHANGE -DHAVE_MMAP -pipe
-+COMPILE_FLAGS= -DHAVE_PATHS_H -DHAVE_MMAP -pipe
++COMPILE_FLAGS= -DHAVE_PATHS_H -DHAVE_MMAP -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc
  
  CFLAGS= $(COPTS) $(COMPILE_FLAGS) $(INCLUDE_DIRS) '-DDESTDIR="@DESTDIR@"'
  

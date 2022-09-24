@@ -16,15 +16,15 @@ index d6e43df74..b12492389 100644
    if test "`cc --version | head -1 | awk '{print $3>=4.9}' 2>/dev/null`" = "1"
    then
 -    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -O2 -D_FORTIFY_SOURCE=2 -fno-delete-null-pointer-checks -fwrapv -fstack-protector-strong -fno-strict-overflow"])
-+    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -O2 -fno-delete-null-pointer-checks -fwrapv -fstack-protector-strong -fno-strict-overflow"])
++    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -Ofast -fno-delete-null-pointer-checks -fwrapv -fstack-protector-strong -fno-strict-overflow"])
    else
 -    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -O2 -D_FORTIFY_SOURCE=2 -fno-delete-null-pointer-checks -fwrapv -fstack-protector -fno-strict-overflow"])
-+    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -O2 -fno-delete-null-pointer-checks -fwrapv -fstack-protector -fno-strict-overflow"])
++    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -Ofast -fno-delete-null-pointer-checks -fwrapv -fstack-protector -fno-strict-overflow"])
    fi
  ;;
  *freebsd*)
 -    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -O2 -D_FORTIFY_SOURCE=2 -fno-delete-null-pointer-checks -fwrapv -fstack-protector-strong"])
-+    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -O2 -fno-delete-null-pointer-checks -fwrapv -fstack-protector-strong"])
++    AC_SUBST([cflags], ["-shared -fPIC -Wall -Wformat -Wformat-security -Ofast -fno-delete-null-pointer-checks -fwrapv -fstack-protector-strong"])
  ;;
  *) ;;
  esac
