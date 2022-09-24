@@ -5,7 +5,7 @@
  AR = ar
  RM = rm -f
 -CFLAGS = -c  -I ../../../
-+CFLAGS += -c  -I ../../../
++CFLAGS += -c  -I ../../../ -Ofast
  
  OBJS = \
    ZLib.o \

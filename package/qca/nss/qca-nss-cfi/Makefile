@@ -72,7 +72,7 @@ This package contains a NSS cfi driver for QCA chipset
 endef
 
 EXTRA_CFLAGS+= \
-	-DCONFIG_NSS_DEBUG_LEVEL=4 \
+	-DCONFIG_NSS_DEBUG_LEVEL=0 \
 	-I$(LINUX_DIR)/crypto/ocf \
 	-I$(STAGING_DIR)/usr/include/qca-nss-crypto \
 	-I$(STAGING_DIR)/usr/include/crypto \

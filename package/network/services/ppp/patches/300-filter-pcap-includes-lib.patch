@@ -14,7 +14,7 @@ Signed-off-by: Jo-Philipp Wich <jo@mein.io>
 -LIBS    += -lpcap
 -CFLAGS  += -DPPP_FILTER
 +LIBS    += -lpcap -L$(STAGING_DIR)/usr/lib
-+CFLAGS  += -DPPP_FILTER -I$(STAGING_DIR)/usr/include
++CFLAGS  += -DPPP_FILTER -I$(STAGING_DIR)/usr/include -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc
  endif
  
  ifdef HAVE_INET6

@@ -26,10 +26,10 @@
  
  # Other flags
 -CFLAGS=-Os -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow \
-+#CFLAGS=-Os -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow \
++#CFLAGS=-Ofast -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wshadow \
  	-Wpointer-arith -Wcast-qual -Winline -I.
 -#CFLAGS=-O2 -W -Wall -Wstrict-prototypes -I.
-+CFLAGS=-O2 -W -Wall -Wstrict-prototypes -I.
++CFLAGS=-Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc -W -Wall -Wstrict-prototypes -I.
  DEPFLAGS=-MMD
  XCFLAGS=$(CFLAGS) $(DEPFLAGS) $(WARN) $(HEADERS) $(WELIB_FLAG) $(WEDEF_FLAG)
  PICFLAG=-fPIC

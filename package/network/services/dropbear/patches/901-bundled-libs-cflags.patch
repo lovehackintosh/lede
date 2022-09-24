@@ -5,7 +5,7 @@
  LTC_CFLAGS += -Wno-type-limits
  
 +ifdef OPENWRT_BUILD
-+  ifeq (-Os,$(filter -Os,$(CFLAGS)))
++  ifeq (-Ofast,$(filter -Ofast,$(CFLAGS)))
 +    LTC_CFLAGS += -DLTC_SMALL_CODE
 +  endif
 +else

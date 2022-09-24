@@ -84,8 +84,8 @@ endif
 GCC_CONFIGURE:= \
 	SHELL="$(BASH)" \
 	$(if $(shell gcc --version 2>&1 | grep -E "Apple.(LLVM|clang)"), \
-		CFLAGS="-O2 -fbracket-depth=512 -pipe" \
-		CXXFLAGS="-O2 -fbracket-depth=512 -pipe" \
+		CFLAGS="-Ofast -fbracket-depth=512 -pipe" \
+		CXXFLAGS="-Ofast -fbracket-depth=512 -pipe" \
 	) \
 	$(HOST_SOURCE_DIR)/configure \
 		--with-bugurl=$(BUGURL) \
@@ -161,7 +161,7 @@ ifeq ($(CONFIG_arm),y)
   # Do not let TARGET_CFLAGS get poisoned by extra CPU optimization flags
   # that do not belong here. The cpu,fpu type should be specified via
   # --with-cpu and --with-fpu for ARM and not CFLAGS.
-  TARGET_CFLAGS:=$(filter-out -m%,$(call qstrip,$(TARGET_CFLAGS)))
+  TARGET_CFLAGS:=$(filter-out -m%,$(call qstrip,$(TARGET_CFLAGS))) -Ofast -pipe
 endif
 
 ifeq ($(CONFIG_TARGET_x86)$(CONFIG_USE_GLIBC)$(CONFIG_INSTALL_GCCGO),yyy)
@@ -184,7 +184,7 @@ endef
 ifeq ($(GCC_MAJOR_VERSION),12)
 	GCC_VERSION_FILE:=gcc/genversion.cc
 else
-	GCC_VERSION_FILE:=gcc/version.c
+	GCC_VERSION_FILE:=gcc/genversion.cc
 endif
 
 ifneq ($(GCC_PREPARE),)

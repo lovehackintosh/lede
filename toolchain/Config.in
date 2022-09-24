@@ -298,7 +298,7 @@ comment "Debuggers"
 config GDB
 	bool
 	prompt "Build gdb" if TOOLCHAINOPTS
-	default y if !EXTERNAL_TOOLCHAIN
+	default n
 	help
 	  Enable if you want to build the gdb.
 
@@ -306,7 +306,6 @@ config GDB_PYTHON
 	bool
 	depends on GDB
 	prompt "Build gdb with python binding"
-	
 	help
 	  Enable the python bindings for GDB to allow using python in the gdb shell.
 

@@ -39,7 +39,8 @@ MAKE_OPTS:= \
 	$(KERNEL_MAKE_FLAGS) \
 	M="$(PKG_BUILD_DIR)" \
 	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
-	$(EXTRA_KCONFIG)
+	$(EXTRA_KCONFIG) \
+	-Ofast -pipe
 
 define Build/Compile
 	$(MAKE) -C "$(LINUX_DIR)" \

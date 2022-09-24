@@ -7,7 +7,7 @@ Index: lzma-4.65/CPP/7zip/Compress/LZMA_Alone/makefile.gcc
  LIB = -lm
  RM = rm -f
 -CFLAGS = -c
-+CFLAGS = -c -D_FILE_OFFSET_BITS=64
++CFLAGS = -c -D_FILE_OFFSET_BITS=64 -Ofast
  
  ifdef SystemDrive
  IS_MINGW = 1

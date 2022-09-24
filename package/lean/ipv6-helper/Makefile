@@ -23,7 +23,7 @@ define Package/ipv6helper
 	SECTION:=ipv6
 	TITLE:=IPv6 Helper and Dynamic Update he.net of ip
 	PKGARCH:=all
-	DEPENDS:=+luci-proto-ipv6 +wget +ip6tables +libip6tc +kmod-ipt-nat6 +odhcpd-ipv6only +odhcp6c +6in4
+	DEPENDS:=+luci-proto-ipv6 +ip6tables +odhcpd +odhcp6c
 endef
 
 define Package/ipv6helper/description
@@ -40,16 +40,9 @@ define Build/Compile
 endef
 
 define Package/ipv6helper/postinst
-#!/bin/sh
-if [ -z "$${IPKG_INSTROOT}" ]; then
-	chmod 755 /etc/hotplug.d/iface/60-6in4 >/dev/null 2>&1
-fi
-exit 0
 endef
 
 define Package/ipv6helper/install
-	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
-	$(INSTALL_BIN) ./files/root/etc/hotplug.d/iface/60-6in4 $(1)/etc/hotplug.d/iface/60-6in4
 endef
 
 

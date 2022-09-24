@@ -54,7 +54,7 @@ Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 +
 +obj-$(CONFIG_CRYPTO_CHACHA_MIPS) += chacha-mips.o
 +chacha-mips-y := chacha-core.o chacha-glue.o
-+AFLAGS_chacha-core.o += -O2 # needed to fill branch delay slots
++AFLAGS_chacha-core.o += -Ofast # needed to fill branch delay slots
 --- a/arch/mips/crypto/chacha-core.S
 +++ b/arch/mips/crypto/chacha-core.S
 @@ -125,7 +125,7 @@

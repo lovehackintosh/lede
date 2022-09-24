@@ -13,7 +13,7 @@ IMAGE_COPY:=0
 CROSS_COMPILE = mips-linux-
 
 OBJCOPY:= $(CROSS_COMPILE)objcopy -O binary -R .reginfo -R .note -R .comment -R .mdebug -S
-CFLAGS := -fno-builtin -Os -G 0 -ffunction-sections -mno-abicalls -fno-pic -mabi=32 -march=mips32 -Wa,-32 -Wa,-march=mips32 -Wa,-mips32 -Wa,--trap -Wall -DRAMSTART=${RAMSTART} -DRAMSIZE=${RAMSIZE} -DKERNEL_ENTRY=${KERNEL_ENTRY} -D_LZMA_IN_CB
+CFLAGS := -fno-builtin -Ofast -G 0 -ffunction-sections -mno-abicalls -fno-pic -mabi=32 -march=mips32 -Wa,-32 -Wa,-march=mips32 -Wa,-mips32 -Wa,--trap -Wall -DRAMSTART=${RAMSTART} -DRAMSIZE=${RAMSIZE} -DKERNEL_ENTRY=${KERNEL_ENTRY} -D_LZMA_IN_CB
 ifeq ($(IMAGE_COPY),1)
 CFLAGS += -DLOADADDR=${LOADADDR} -DIMAGE_COPY=1
 endif

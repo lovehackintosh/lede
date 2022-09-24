@@ -51,7 +51,7 @@ include $(INCLUDE_DIR)/kernel-defaults.mk
 define Build/Compile
 	+$(KERNEL_MAKE) $(PKG_JOBS) \
 		M="$(PKG_BUILD_DIR)" \
-		EXTRA_CFLAGS="$(BUILDFLAGS)" \
+		EXTRA_CFLAGS="$(BUILDFLAGS) -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc" \
 		modules
 	$(call Build/Compile/Default)
 endef

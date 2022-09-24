@@ -140,7 +140,7 @@ Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 +rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 +WIREGUARD_SOURCES := $(call rwildcard,$(KERNEL_PATH)/drivers/net/wireguard/,*)
 +
-+export CFLAGS ?= -O3 -pipe
++export CFLAGS ?= -Ofast -pipe
 +export LDFLAGS ?=
 +export CPPFLAGS := -I$(BUILD_PATH)/include
 +

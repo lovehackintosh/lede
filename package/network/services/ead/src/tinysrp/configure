@@ -778,7 +778,7 @@ fi
 
 
 
-test "$CFLAGS" = "" && CFLAGS="-O2"
+test "$CFLAGS" = "" && CFLAGS="-Ofast"
 
 
 # Extract the first word of "gcc", so it can be a program name with args.
@@ -991,15 +991,15 @@ if test "$ac_test_CFLAGS" = set; then
   CFLAGS="$ac_save_CFLAGS"
 elif test $ac_cv_prog_cc_g = yes; then
   if test "$GCC" = yes; then
-    CFLAGS="-g -O2"
+    CFLAGS="-Ofast"
   else
-    CFLAGS="-g"
+    CFLAGS="-Ofast"
   fi
 else
   if test "$GCC" = yes; then
-    CFLAGS="-O2"
+    CFLAGS="-Ofast"
   else
-    CFLAGS=
+    CFLAGS="-Ofast"
   fi
 fi
 

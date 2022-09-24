@@ -7,7 +7,7 @@ include_HEADERS = tinysrp.h
 
 lib_LIBRARIES = libtinysrp.a
 
-CFLAGS = -O2 @signed@
+CFLAGS = -Ofast @signed@
 
 libtinysrp_a_SOURCES = \
   tinysrp.c t_client.c t_getconf.c t_conv.c t_getpass.c t_sha.c t_math.c \

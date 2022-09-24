@@ -54,7 +54,7 @@ define Build/InstallDev
 endef
 
 EXTRA_CFLAGS+= \
-	-DCONFIG_NSS_DEBUG_LEVEL=4 \
+	-DCONFIG_NSS_DEBUG_LEVEL=0 \
 	-I$(STAGING_DIR)/usr/include/qca-nss-crypto \
 	-I$(STAGING_DIR)/usr/include/qca-nss-drv \
 	-I$(PKG_BUILD_DIR)/$(NSS_CRYPTO_DIR)/include \

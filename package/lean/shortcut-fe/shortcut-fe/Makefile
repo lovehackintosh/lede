@@ -72,7 +72,7 @@ define Build/Compile
 		$(KERNEL_MAKE_FLAGS) \
 		$(PKG_MAKE_FLAGS) \
 		M="$(PKG_BUILD_DIR)" \
-		EXTRA_CFLAGS+="-DSFE_SUPPORT_IPV6" SFE_SUPPORT_IPV6=y \
+		EXTRA_CFLAGS+="-DSFE_SUPPORT_IPV6 -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc" SFE_SUPPORT_IPV6=y \
 		$(if $(HAVE_ECM),EXTRA_CFLAGS+="-DCONFIG_SFE_ECM" CONFIG_SFE_ECM=y,) \
 		modules
 endef

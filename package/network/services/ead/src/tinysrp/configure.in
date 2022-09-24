@@ -4,7 +4,7 @@ AC_INIT(t_pwd.h)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(libtinysrp, 0.7.5)
 
-test "$CFLAGS" = "" && CFLAGS="-O2"
+test "$CFLAGS" = "" && CFLAGS="-Ofast"
 
 dnl Checks for programs.
 

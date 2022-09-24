@@ -339,6 +339,7 @@ menu "Global build settings"
 
 	config SELINUX
 		bool "Enable SELinux"
+		default n
 		select KERNEL_SECURITY_SELINUX
 		select TARGET_ROOTFS_SECURITY_LABELS
 		select PACKAGE_procd-selinux

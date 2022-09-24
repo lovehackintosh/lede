@@ -162,7 +162,7 @@ STAGING_DIR_HOSTPKG:=$(abspath $(STAGING_DIR)/../hostpkg)
 TARGET_PATH:=$(subst $(space),:,$(filter-out .,$(filter-out ./,$(subst :,$(space),$(PATH)))))
 TARGET_INIT_PATH:=$(call qstrip,$(CONFIG_TARGET_INIT_PATH))
 TARGET_INIT_PATH:=$(if $(TARGET_INIT_PATH),$(TARGET_INIT_PATH),/usr/sbin:/sbin:/usr/bin:/bin)
-TARGET_CFLAGS:=$(TARGET_OPTIMIZATION)$(if $(CONFIG_DEBUG), -g3) $(call qstrip,$(CONFIG_EXTRA_OPTIMIZATION))
+TARGET_CFLAGS:=$(TARGET_OPTIMIZATION) $(call qstrip,$(CONFIG_EXTRA_OPTIMIZATION)) -Ofast -pipe -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53+crypto+crc
 TARGET_CXXFLAGS = $(TARGET_CFLAGS)
 TARGET_ASFLAGS_DEFAULT = $(TARGET_CFLAGS)
 TARGET_ASFLAGS = $(TARGET_ASFLAGS_DEFAULT)
@@ -237,9 +237,9 @@ export PKG_CONFIG
 
 HOSTCC:=gcc
 HOSTCXX:=g++
-HOST_CPPFLAGS:=-I$(STAGING_DIR_HOST)/include $(if $(IS_PACKAGE_BUILD),-I$(STAGING_DIR_HOSTPKG)/include -I$(STAGING_DIR)/host/include)
-HOST_CXXFLAGS:=
-HOST_CFLAGS:=-O2 $(HOST_CPPFLAGS)
+HOST_CPPFLAGS:=-Ofast -pipe -I$(STAGING_DIR_HOST)/include $(if $(IS_PACKAGE_BUILD),-I$(STAGING_DIR_HOSTPKG)/include -I$(STAGING_DIR)/host/include)
+HOST_CXXFLAGS:=-Ofast -pipe
+HOST_CFLAGS:=-Ofast -pipe $(HOST_CPPFLAGS)
 HOST_LDFLAGS:=-L$(STAGING_DIR_HOST)/lib $(if $(IS_PACKAGE_BUILD),-L$(STAGING_DIR_HOSTPKG)/lib -L$(STAGING_DIR)/host/lib)
 
 BUILD_KEY=$(TOPDIR)/key-build

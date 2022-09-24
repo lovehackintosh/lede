@@ -102,7 +102,7 @@ HOST_MAKE_FLAGS += \
 
 
 ifneq ($(BUILD_VARIANT),none)
-  TARGET_CFLAGS := $(filter-out -O2 -O3 -fno-plt,$(TARGET_CFLAGS))
+  TARGET_CFLAGS := $(filter-out -Ofast -fno-plt,$(TARGET_CFLAGS))
   MAKE_PATH := grub-core
 endif
 

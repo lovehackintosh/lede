@@ -61,7 +61,7 @@ BPF_CFLAGS := \
 	-fno-asynchronous-unwind-tables \
 	-Wno-uninitialized -Wno-unused-variable \
 	-Wno-unused-label \
-	-O2 -emit-llvm -Xclang -disable-llvm-passes
+	-Ofast -emit-llvm -Xclang -disable-llvm-passes
 
 ifneq ($(CONFIG_HAS_BPF_TOOLCHAIN),)
 ifeq ($(DUMP)$(filter download refresh,$(MAKECMDGOALS)),)
@@ -74,9 +74,9 @@ endif
 endif
 
 define CompileBPF
-	$(CLANG) -g -target $(BPF_ARCH)-linux-gnu $(BPF_CFLAGS) $(2) \
+	$(CLANG) -target $(BPF_ARCH)-linux-gnu $(BPF_CFLAGS) $(2) \
 		-c $(1) -o $(patsubst %.c,%.bc,$(1))
-	$(LLVM_OPT) -O2 -mtriple=$(BPF_TARGET) < $(patsubst %.c,%.bc,$(1)) > $(patsubst %.c,%.opt,$(1))
+	$(LLVM_OPT) -Ofast -mtriple=$(BPF_TARGET) < $(patsubst %.c,%.bc,$(1)) > $(patsubst %.c,%.opt,$(1))
 	$(LLVM_DIS) < $(patsubst %.c,%.opt,$(1)) > $(patsubst %.c,%.S,$(1))
 	$(LLVM_LLC) -march=$(BPF_TARGET) -mcpu=v3 -filetype=obj -o $(patsubst %.c,%.o,$(1)) < $(patsubst %.c,%.S,$(1))
 	$(CP) $(patsubst %.c,%.o,$(1)) $(patsubst %.c,%.debug.o,$(1))

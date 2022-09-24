@@ -47,7 +47,7 @@ GLIBC_CONFIGURE:= \
 	unset LD_LIBRARY_PATH; \
 	BUILD_CC="$(HOSTCC)" \
 	$(TARGET_CONFIGURE_OPTS) \
-	CFLAGS="-O2 $(filter-out -Os,$(call qstrip,$(TARGET_CFLAGS)))" \
+	CFLAGS="-Ofast $(filter-out -Ofast,$(call qstrip,$(TARGET_CFLAGS)))" \
 	libc_cv_slibdir="/lib" \
 	use_ldconfig=no \
 	$(HOST_BUILD_DIR)/$(GLIBC_PATH)configure \
@@ -64,7 +64,7 @@ GLIBC_CONFIGURE:= \
 		  $(if $(CONFIG_PKG_CC_STACKPROTECTOR_REGULAR),--enable-stack-protector=yes) \
 		  $(if $(CONFIG_PKG_CC_STACKPROTECTOR_STRONG),--enable-stack-protector=strong) \
 		  $(if $(CONFIG_PKG_RELRO_FULL),--enable-bind-now) \
-		--enable-kernel=5.4.0
+		--enable-kernel=5.15.0
 
 export libc_cv_ssp=no
 export libc_cv_ssp_strong=no

@@ -687,7 +687,7 @@ if test "$OPT_ANY" = "0"; then
 
    SAVED_CXXFLAGS="$CXXFLAGS"
 
-   CXXFLAGS="-O2"
+   CXXFLAGS="-Ofast"
    AC_MSG_CHECKING([if $CXXNAME supports $CXXFLAGS])
    XXX_COMPILE_IFELSE(
       [AC_LANG_SOURCE([[int main() { return 0; }]])],
