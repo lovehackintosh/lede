@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2014-2022 OpenWrt.org
+# Copyright (C) 2014-2015 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -12,9 +12,9 @@ PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/fstools.git
-PKG_MIRROR_HASH:=faa4679562ae31cb6dbbc90b7f3f297294a51f7be1b12d10a5f0b7acfaae7252
-PKG_SOURCE_DATE:=2021-08-14
-PKG_SOURCE_VERSION:=2e3aca299ea7bbe74f219860510c4b34e77c7aa4
+PKG_MIRROR_HASH:=28be14a1e28fc62e80681e1b5e7f2435692ee326b66afcc1f3d158764df686d5
+PKG_SOURCE_DATE:=2022-11-10
+PKG_SOURCE_VERSION:=3affe9ea5098c8bb90111ce97d50ad976ef0c034
 CMAKE_INSTALL:=1
 
 PKG_LICENSE:=GPL-2.0
@@ -49,7 +49,7 @@ define Package/fstools/config
 		depends on PACKAGE_fstools
 		depends on NAND_SUPPORT
 		bool "Support extroot functionality with UBIFS"
-		default n
+		default y
 		help
 			This option makes it possible to use extroot functionality if the root filesystem resides on an UBIFS partition
 
@@ -75,11 +75,15 @@ define Package/snapshot-tool
   DEPENDS:=+libubox +fstools
 endef
 
+define Package/block-mount/conffiles
+/etc/config/fstab
+endef
+
 define Package/block-mount
   SECTION:=base
   CATEGORY:=Base system
   TITLE:=Block device mounting and checking
-  DEPENDS:=+fstools +ubox +libubox +libuci +libblobmsg-json +libjson-c
+  DEPENDS:=+ubox +libubox +libuci +libblobmsg-json +libjson-c
 endef
 
 define Package/blockd
