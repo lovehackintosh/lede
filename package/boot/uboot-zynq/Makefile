@@ -18,6 +18,7 @@ include $(INCLUDE_DIR)/host-build.mk
 
 define U-Boot/Default
   BUILD_TARGET:=zynq
+  BUILD_SUBTARGET:=generic
   UBOOT_IMAGE:=spl/boot.bin u-boot.img
   UBOOT_CONFIG:=zynq_$(1)
   UENV:=default
@@ -59,7 +60,5 @@ endef
 
 define Package/u-boot/install/default
 endef
-
-Build/Exports:=$(Host/Exports)
 
 $(eval $(call BuildPackage/U-Boot))

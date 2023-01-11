@@ -8,10 +8,10 @@
 include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
-PKG_VERSION:=2021.01
-PKG_RELEASE:=1
+PKG_VERSION:=2022.10
+PKG_RELEASE:=$(AUTORELEASE)
 
-PKG_HASH:=b407e1510a74e863b8b5cb42a24625344f0e0c2fc7582d8c866bd899367d0454
+PKG_HASH:=50b4482a505bc281ba8470c399a3c26e145e29b23500bc35c50debd7fa46bdf8
 
 include $(INCLUDE_DIR)/u-boot.mk
 include $(INCLUDE_DIR)/package.mk
@@ -36,6 +36,14 @@ define U-Boot/helios4
   UBOOT_IMAGE:=u-boot-spl.kwb
 endef
 
+define U-Boot/omnia
+  NAME:=Turris Omnia
+  BUILD_DEVICES:=cznic_turris-omnia
+  BUILD_SUBTARGET:=cortexa9
+  UBOOT_CONFIG:=turris_omnia
+  UBOOT_IMAGE:=u-boot-spl.kwb
+endef
+
 define U-Boot/espressobin
   NAME:=Marvell ESPRESSObin
   BUILD_SUBTARGET:=cortexa53
@@ -47,20 +55,18 @@ define U-Boot/uDPU
   BUILD_SUBTARGET:=cortexa53
 endef
 
+define U-Boot/eDPU
+  NAME:=Methode eDPU
+  BUILD_SUBTARGET:=cortexa53
+endef
+
 UBOOT_TARGETS:= \
 	clearfog \
 	helios4 \
+	omnia \
 	espressobin \
-	uDPU
-
-Build/Exports:=$(Host/Exports)
-
-define Build/Configure
-	# enable additional options beyond <device>_defconfig
-	echo CONFIG_CMD_SETEXPR=y >> $(PKG_BUILD_DIR)/configs/$(UBOOT_CONFIG)_defconfig
-
-	$(call Build/Configure/U-Boot)
-endef
+	uDPU \
+	eDPU
 
 define Package/u-boot/install
 	$(if $(findstring cortexa53,$(BUILD_SUBTARGET)),,$(Package/u-boot/install/default))
