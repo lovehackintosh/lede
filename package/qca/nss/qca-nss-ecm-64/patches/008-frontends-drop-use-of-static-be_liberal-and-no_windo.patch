@@ -1,6 +1,6 @@
 --- a/frontends/nss/ecm_nss_ported_ipv4.c
 +++ b/frontends/nss/ecm_nss_ported_ipv4.c
-@@ -125,6 +125,7 @@
+@@ -123,6 +123,7 @@ struct ecm_nss_ported_ipv4_connection_in
  static int ecm_nss_ported_ipv4_accelerated_count[ECM_NSS_PORTED_IPV4_PROTO_MAX] = {0};
  						/* Array of Number of TCP and UDP connections currently offloaded */
  
@@ -8,7 +8,7 @@
  /*
   * Expose what should be a static flag in the TCP connection tracker.
   */
-@@ -132,6 +133,7 @@
+@@ -130,6 +131,7 @@ static int ecm_nss_ported_ipv4_accelerat
  extern int nf_ct_tcp_no_window_check;
  #endif
  extern int nf_ct_tcp_be_liberal;
@@ -16,7 +16,7 @@
  
  /*
   * ecm_nss_ported_ipv4_connection_callback()
-@@ -372,6 +374,10 @@
+@@ -370,6 +372,10 @@ static void ecm_nss_ported_ipv4_connecti
  	uint8_t dest_mac_xlate[ETH_ALEN];
  	ecm_db_direction_t ecm_dir;
  	ecm_front_end_acceleration_mode_t result_mode;
@@ -27,7 +27,7 @@
  
  	DEBUG_CHECK_MAGIC(npci, ECM_NSS_PORTED_IPV4_CONNECTION_INSTANCE_MAGIC, "%px: magic failed", npci);
  
-@@ -1236,9 +1242,17 @@
+@@ -1232,9 +1238,17 @@ static void ecm_nss_ported_ipv4_connecti
  			nircm->tcp_rule.return_end = ct->proto.tcp.seen[return_dir].td_end;
  			nircm->tcp_rule.return_max_end = ct->proto.tcp.seen[return_dir].td_maxend;
  #ifdef ECM_OPENWRT_SUPPORT
@@ -47,7 +47,7 @@
  					|| (ct->proto.tcp.seen[return_dir].flags & IP_CT_TCP_FLAG_BE_LIBERAL)) {
 --- a/frontends/nss/ecm_nss_ported_ipv6.c
 +++ b/frontends/nss/ecm_nss_ported_ipv6.c
-@@ -125,6 +125,7 @@
+@@ -123,6 +123,7 @@ struct ecm_nss_ported_ipv6_connection_in
  static int ecm_nss_ported_ipv6_accelerated_count[ECM_NSS_PORTED_IPV6_PROTO_MAX] = {0};
  						/* Array of Number of TCP and UDP connections currently offloaded */
  
@@ -55,7 +55,7 @@
  /*
   * Expose what should be a static flag in the TCP connection tracker.
   */
-@@ -132,6 +133,7 @@
+@@ -130,6 +131,7 @@ static int ecm_nss_ported_ipv6_accelerat
  extern int nf_ct_tcp_no_window_check;
  #endif
  extern int nf_ct_tcp_be_liberal;
@@ -63,7 +63,7 @@
  
  /*
   * ecm_nss_ported_ipv6_connection_callback()
-@@ -376,6 +378,10 @@
+@@ -374,6 +376,10 @@ static void ecm_nss_ported_ipv6_connecti
  	ip_addr_t src_ip;
  	ip_addr_t dest_ip;
  	ecm_front_end_acceleration_mode_t result_mode;
@@ -74,7 +74,7 @@
  
  	DEBUG_CHECK_MAGIC(npci, ECM_NSS_PORTED_IPV6_CONNECTION_INSTANCE_MAGIC, "%px: magic failed", npci);
  
-@@ -1162,9 +1168,17 @@
+@@ -1158,9 +1164,17 @@ static void ecm_nss_ported_ipv6_connecti
  			nircm->tcp_rule.return_end = ct->proto.tcp.seen[return_dir].td_end;
  			nircm->tcp_rule.return_max_end = ct->proto.tcp.seen[return_dir].td_maxend;
  #ifdef ECM_OPENWRT_SUPPORT
@@ -94,9 +94,9 @@
  					|| (ct->proto.tcp.seen[return_dir].flags & IP_CT_TCP_FLAG_BE_LIBERAL)) {
 --- a/frontends/sfe/ecm_sfe_ported_ipv4.c
 +++ b/frontends/sfe/ecm_sfe_ported_ipv4.c
-@@ -422,6 +422,10 @@
- 	int32_t interface_type_counts[ECM_DB_IFACE_TYPE_COUNT];
+@@ -346,6 +346,10 @@ static void ecm_sfe_ported_ipv4_connecti
  	bool rule_invalid;
+ 	uint8_t dest_mac_xlate[ETH_ALEN];
  	ecm_db_direction_t ecm_dir;
 +#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 12, 0)
 +	struct net *net = nf_ct_net(ct);
@@ -105,7 +105,7 @@
  	ecm_front_end_acceleration_mode_t result_mode;
  
  	DEBUG_CHECK_MAGIC(npci, ECM_SFE_PORTED_IPV4_CONNECTION_INSTANCE_MAGIC, "%px: magic failed", npci);
-@@ -1333,9 +1337,17 @@
+@@ -976,9 +980,17 @@ static void ecm_sfe_ported_ipv4_connecti
  			nircm->tcp_rule.return_end = ct->proto.tcp.seen[return_dir].td_end;
  			nircm->tcp_rule.return_max_end = ct->proto.tcp.seen[return_dir].td_maxend;
  #ifdef ECM_OPENWRT_SUPPORT
@@ -125,7 +125,7 @@
  					|| (ct->proto.tcp.seen[return_dir].flags & IP_CT_TCP_FLAG_BE_LIBERAL)) {
 --- a/frontends/sfe/ecm_sfe_ported_ipv6.c
 +++ b/frontends/sfe/ecm_sfe_ported_ipv6.c
-@@ -426,6 +426,10 @@
+@@ -350,6 +350,10 @@ static void ecm_sfe_ported_ipv6_connecti
  	int32_t interface_type_counts[ECM_DB_IFACE_TYPE_COUNT];
  	bool rule_invalid;
  	ip_addr_t src_ip;
@@ -136,7 +136,7 @@
  	ip_addr_t dest_ip;
  	ecm_front_end_acceleration_mode_t result_mode;
  
-@@ -1293,9 +1297,17 @@
+@@ -935,9 +939,17 @@ static void ecm_sfe_ported_ipv6_connecti
  			nircm->tcp_rule.return_end = ct->proto.tcp.seen[return_dir].td_end;
  			nircm->tcp_rule.return_max_end = ct->proto.tcp.seen[return_dir].td_maxend;
  #ifdef ECM_OPENWRT_SUPPORT

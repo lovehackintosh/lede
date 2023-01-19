@@ -94,7 +94,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/ecm_classifier_emesh.c
 +++ b/ecm_classifier_emesh.c
-@@ -977,19 +977,11 @@ int ecm_classifier_emesh_init(struct den
+@@ -974,19 +974,11 @@ int ecm_classifier_emesh_init(struct den
  		return -1;
  	}
  
@@ -187,7 +187,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/ecm_conntrack_notifier.c
 +++ b/ecm_conntrack_notifier.c
-@@ -414,12 +414,8 @@ int ecm_conntrack_notifier_init(struct d
+@@ -418,12 +418,8 @@ int ecm_conntrack_notifier_init(struct d
  		return -1;
  	}
  
@@ -397,7 +397,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  	 * Register Link Aggregation callbacks with the bonding driver
 --- a/frontends/nss/ecm_nss_ipv4.c
 +++ b/frontends/nss/ecm_nss_ipv4.c
-@@ -2802,41 +2802,23 @@ int ecm_nss_ipv4_init(struct dentry *den
+@@ -2803,41 +2803,23 @@ int ecm_nss_ipv4_init(struct dentry *den
  		return result;
  	}
  
@@ -451,7 +451,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  
  	if (!debugfs_create_file("accel_limit_mode", S_IRUGO | S_IWUSR, ecm_nss_ipv4_dentry,
  					NULL, &ecm_nss_ipv4_accel_limit_mode_fops)) {
-@@ -2867,11 +2849,8 @@ int ecm_nss_ipv4_init(struct dentry *den
+@@ -2868,11 +2850,8 @@ int ecm_nss_ipv4_init(struct dentry *den
  		goto task_cleanup;
  	}
  
@@ -467,7 +467,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  	if (!ecm_nss_non_ported_ipv4_debugfs_init(ecm_nss_ipv4_dentry)) {
 --- a/frontends/nss/ecm_nss_ipv6.c
 +++ b/frontends/nss/ecm_nss_ipv6.c
-@@ -2542,41 +2542,23 @@ int ecm_nss_ipv6_init(struct dentry *den
+@@ -2543,41 +2543,23 @@ int ecm_nss_ipv6_init(struct dentry *den
  		return result;
  	}
  
@@ -521,7 +521,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  
  	if (!debugfs_create_file("accel_limit_mode", S_IRUGO | S_IWUSR, ecm_nss_ipv6_dentry,
  					NULL, &ecm_nss_ipv6_accel_limit_mode_fops)) {
-@@ -2607,11 +2589,8 @@ int ecm_nss_ipv6_init(struct dentry *den
+@@ -2608,11 +2590,8 @@ int ecm_nss_ipv6_init(struct dentry *den
  		goto task_cleanup;
  	}
  
@@ -601,7 +601,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/frontends/nss/ecm_nss_ported_ipv4.c
 +++ b/frontends/nss/ecm_nss_ported_ipv4.c
-@@ -2944,12 +2944,8 @@ bool ecm_nss_ported_ipv4_debugfs_init(st
+@@ -2958,12 +2958,8 @@ bool ecm_nss_ported_ipv4_debugfs_init(st
  		return false;
  	}
  
@@ -618,7 +618,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/frontends/nss/ecm_nss_ported_ipv6.c
 +++ b/frontends/nss/ecm_nss_ported_ipv6.c
-@@ -2732,12 +2732,8 @@ bool ecm_nss_ported_ipv6_debugfs_init(st
+@@ -2746,12 +2746,8 @@ bool ecm_nss_ported_ipv6_debugfs_init(st
  		return false;
  	}
  
@@ -635,7 +635,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/frontends/sfe/ecm_sfe_ipv4.c
 +++ b/frontends/sfe/ecm_sfe_ipv4.c
-@@ -1808,48 +1808,27 @@ int ecm_sfe_ipv4_init(struct dentry *den
+@@ -1809,48 +1809,27 @@ int ecm_sfe_ipv4_init(struct dentry *den
  	}
  
  #ifdef CONFIG_XFRM
@@ -700,7 +700,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  					NULL, &ecm_sfe_ipv4_accel_limit_mode_fops)) {
 --- a/frontends/sfe/ecm_sfe_ipv6.c
 +++ b/frontends/sfe/ecm_sfe_ipv6.c
-@@ -1532,48 +1532,27 @@ int ecm_sfe_ipv6_init(struct dentry *den
+@@ -1533,48 +1533,27 @@ int ecm_sfe_ipv6_init(struct dentry *den
  	}
  
  #ifdef CONFIG_XFRM
@@ -797,7 +797,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/frontends/sfe/ecm_sfe_ported_ipv4.c
 +++ b/frontends/sfe/ecm_sfe_ported_ipv4.c
-@@ -2528,12 +2528,8 @@ bool ecm_sfe_ported_ipv4_debugfs_init(st
+@@ -2540,12 +2540,8 @@ bool ecm_sfe_ported_ipv4_debugfs_init(st
  		return false;
  	}
  
@@ -814,7 +814,7 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  }
 --- a/frontends/sfe/ecm_sfe_ported_ipv6.c
 +++ b/frontends/sfe/ecm_sfe_ported_ipv6.c
-@@ -2374,12 +2374,8 @@ bool ecm_sfe_ported_ipv6_debugfs_init(st
+@@ -2386,12 +2386,8 @@ bool ecm_sfe_ported_ipv6_debugfs_init(st
  		return false;
  	}
  

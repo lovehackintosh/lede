@@ -10,11 +10,9 @@ Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
  ecm_conntrack_notifier.c | 16 +++++++++++++++-
  1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/ecm_conntrack_notifier.c b/ecm_conntrack_notifier.c
-index 9c8a45e..9f2cdae 100644
 --- a/ecm_conntrack_notifier.c
 +++ b/ecm_conntrack_notifier.c
-@@ -322,7 +322,7 @@ EXPORT_SYMBOL(ecm_conntrack_ipv4_event);
+@@ -320,7 +320,7 @@ EXPORT_SYMBOL(ecm_conntrack_ipv4_event);
  #ifdef CONFIG_NF_CONNTRACK_CHAIN_EVENTS
  static int ecm_conntrack_event(struct notifier_block *this, unsigned long events, void *ptr)
  #else
@@ -23,7 +21,7 @@ index 9c8a45e..9f2cdae 100644
  #endif
  {
  #ifdef CONFIG_NF_CONNTRACK_CHAIN_EVENTS
-@@ -388,7 +388,11 @@ static struct notifier_block ecm_conntrack_notifier = {
+@@ -386,7 +386,11 @@ static struct notifier_block ecm_conntra
   *	Netfilter conntrack event system to monitor connection tracking changes
   */
  static struct nf_ct_event_notifier ecm_conntrack_notifier = {
@@ -35,30 +33,30 @@ index 9c8a45e..9f2cdae 100644
  };
  #endif
  #endif
-@@ -426,13 +430,19 @@ int ecm_conntrack_notifier_init(struct dentry *dentry)
- #ifdef CONFIG_NF_CONNTRACK_CHAIN_EVENTS
- 	result = nf_conntrack_register_chain_notifier(&init_net, &ecm_conntrack_notifier);
- #else
+@@ -425,13 +429,19 @@ int ecm_conntrack_notifier_init(struct d
+ 	/*
+ 	 * Eventing subsystem is available so we register a notifier hook to get fast notifications of expired connections
+ 	 */
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 15, 0))
  	result = nf_conntrack_register_notifier(&init_net, &ecm_conntrack_notifier);
 +#else
 +	nf_conntrack_register_notifier(&init_net, &ecm_conntrack_notifier);
 +#endif
- #endif
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 15, 0))
  	if (result < 0) {
  		DEBUG_ERROR("Can't register nf notifier hook.\n");
  		debugfs_remove_recursive(ecm_conntrack_notifier_dentry);
  		return result;
  	}
-+#endif
  #endif
++#endif
  
  	return 0;
-@@ -448,7 +458,11 @@ void ecm_conntrack_notifier_exit(void)
- #ifdef CONFIG_NF_CONNTRACK_CHAIN_EVENTS
- 	nf_conntrack_unregister_chain_notifier(&init_net, &ecm_conntrack_notifier);
- #else
+ }
+@@ -444,7 +454,11 @@ void ecm_conntrack_notifier_exit(void)
+ {
+ 	DEBUG_INFO("ECM Conntrack Notifier exit\n");
+ #ifdef CONFIG_NF_CONNTRACK_EVENTS
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 15, 0))
  	nf_conntrack_unregister_notifier(&init_net, &ecm_conntrack_notifier);
 +#else
@@ -67,6 +65,3 @@ index 9c8a45e..9f2cdae 100644
  #endif
  	/*
  	 * Remove the debugfs files recursively.
--- 
-2.34.1
-
