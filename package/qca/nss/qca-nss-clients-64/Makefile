@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qca-nss-clients-64
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
-PKG_SOURCE_URL:=https://source.codeaurora.org/quic/cc-qrdk/oss/lklm/nss-clients
+PKG_SOURCE_URL:=https://git.codelinaro.org/clo/qsdk/oss/lklm/nss-clients.git
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2021-04-29
-PKG_SOURCE_VERSION:=b93c72c1b72c591c2ddc2f0b24f0e2b457720118
-PKG_MIRROR_HASH:=fbfba64a364b095ea7c9a24cd7af96b63ab0bc29c179e1628c675aa223c0d063
+PKG_SOURCE_DATE:=2022-09-12
+PKG_SOURCE_VERSION:=7828e2db56a5f6b0104615c6f5eabe401d73bdd7
+PKG_MIRROR_HASH:=skip
 
 include $(INCLUDE_DIR)/kernel.mk
 include $(INCLUDE_DIR)/package.mk
@@ -69,6 +69,11 @@ endif
 
 ifneq ($(CONFIG_PACKAGE_kmod-qca-nss-drv-bridge-mgr-64),)
 NSS_CLIENTS_MAKE_OPTS+=bridge-mgr=y
+#enable OVS bridge if ovsmgr is enabled
+ifneq ($(CONFIG_PACKAGE_kmod-qca-ovsmgr),)
+NSS_CLIENTS_MAKE_OPTS+= NSS_BRIDGE_MGR_OVS_ENABLE=y
+EXTRA_CFLAGS+= -I$(STAGING_DIR)/usr/include/qca-ovsmgr
+endif
 endif
 
 ifneq ($(CONFIG_PACKAGE_kmod-qca-nss-drv-vlan-mgr-64),)

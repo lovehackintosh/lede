@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qca-nss-ecm-64
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
-PKG_SOURCE_URL:=https://source.codeaurora.org/quic/cc-qrdk/oss/lklm/qca-nss-ecm
+PKG_SOURCE_URL:=https://git.codelinaro.org/clo/qsdk/oss/lklm/qca-nss-ecm.git
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2021-04-29
-PKG_SOURCE_VERSION:=c115aec34867b582e2e5ea79fc5315971e0e953c
-PKG_MIRROR_HASH:=962385b45daa2e552a15018bf2930c2df1f6f575d885375bf935a142b4255da5
+PKG_SOURCE_DATE:=2021-06-15
+PKG_SOURCE_VERSION:=34267065855d32f33264dc3054efb0e8103d627b
+PKG_MIRROR_HASH:=0917659d69c5f3e6067d6671b9393b4b2d6b6cd5a7bacf5e7d6cf842dc906eca
 
 PKG_BUILD_PARALLEL:=1
 
@@ -30,7 +30,7 @@ define KernelPackage/qca-nss-ecm-64
   FILES:=$(PKG_BUILD_DIR)/*.ko
   KCONFIG:=CONFIG_BRIDGE_NETFILTER=y \
 	CONFIG_NF_CONNTRACK_EVENTS=y \
-	CONFIG_NF_CONNTRACK_CHAIN_EVENTS=y \
+	CONFIG_NF_CONNTRACK_CHAIN_EVENTS=n \
 	CONFIG_NF_CONNTRACK_DSCPREMARK_EXT=n
 endef
 
@@ -47,6 +47,7 @@ define KernelPackage/qca-nss-ecm-64/install
 	$(INSTALL_DATA) ./files/qca-nss-ecm.uci $(1)/etc/config/ecm
 	$(INSTALL_DATA) ./files/qca-nss-ecm.defaults $(1)/etc/uci-defaults/99-qca-nss-ecm
 	$(INSTALL_BIN) ./files/qca-nss-ecm.sysctl $(1)/etc/sysctl.d/qca-nss-ecm.conf
+	echo 'net.netfilter.nf_conntrack_max=16384' >> $(1)/etc/sysctl.d/qca-nss-ecm.conf
 endef
 
 EXTRA_CFLAGS+=-I$(STAGING_DIR)/usr/include/qca-nss-drv
@@ -55,7 +56,7 @@ ifneq (, $(findstring $(CONFIG_TARGET_BOARD), "ipq807x" "ipq60xx"))
 ECM_MAKE_OPTS+= ECM_FRONT_END_NSS_ENABLE=y \
 		ECM_CLASSIFIER_HYFI_ENABLE=n \
 		ECM_MULTICAST_ENABLE=n \
-		ECM_INTERFACE_IPSEC_ENABLE=n \
+		ECM_INTERFACE_IPSEC_ENABLE=y \
 		ECM_INTERFACE_PPTP_ENABLE=n \
 		ECM_INTERFACE_L2TPV2_ENABLE=n \
 		ECM_INTERFACE_GRE_TAP_ENABLE=n \
