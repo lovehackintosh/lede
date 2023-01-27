@@ -12,7 +12,7 @@ is not able to detect and initialize SATA disk Samsung SSD 850 EMT0 [1].
 
 Reset support was introduced in commit 934337080c6c ("phy: marvell:
 phy-mvebu-a3700-comphy: Add native kernel implementation") as part of
-complete rewrite of this driver. v1 patch series of that commit [2] did
+complete rewrite of this driver. v1 patch series of that commit [2] did
 not contain reset support and was tested that is working fine with
 Ethernet, SATA and USB PHYs without issues too.
 

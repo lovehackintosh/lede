@@ -267,13 +267,13 @@ Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
 -relocate_new_kernel_end:
 +kexec_argv_buf:
 +	EXPORT(kexec_argv_buf)
-+	.skip           KEXEC_COMMAND_LINE_SIZE
-+	.size           kexec_argv_buf, KEXEC_COMMAND_LINE_SIZE
++	.skip		KEXEC_COMMAND_LINE_SIZE
++	.size		kexec_argv_buf, KEXEC_COMMAND_LINE_SIZE
 +
 +kexec_argv:
 +	EXPORT(kexec_argv)
-+	.skip           KEXEC_ARGV_SIZE
-+	.size           kexec_argv, KEXEC_ARGV_SIZE
++	.skip		KEXEC_ARGV_SIZE
++	.size		kexec_argv, KEXEC_ARGV_SIZE
  
 -EXPORT(relocate_new_kernel_size)
 -	PTR_WD		relocate_new_kernel_end - relocate_new_kernel

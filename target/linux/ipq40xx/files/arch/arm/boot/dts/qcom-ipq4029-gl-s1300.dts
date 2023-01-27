@@ -30,10 +30,6 @@
 			status = "okay";
 		};
 
-		ess-psgmii@98000 {
-			status = "okay";
-		};
-
 		tcsr@1949000 {
 			compatible = "qcom,tcsr";
 			reg = <0x1949000 0x100>;
@@ -73,16 +69,6 @@
 		};
 
 		watchdog@b017000 {
-			status = "okay";
-		};
-
-		ess-switch@c000000 {
-			status = "okay";
-			switch_lan_bmp = <0x18>;
-			switch_wan_bmp = <0x20>;
-		};
-
-		edma@c080000 {
 			status = "okay";
 		};
 	};
@@ -207,6 +193,17 @@
 				label = "ART";
 				reg = <0x170000 0x10000>;
 				read-only;
+				compatible = "nvmem-cells";
+				#address-cells = <1>;
+				#size-cells = <1>;
+
+				precal_art_1000: precal@1000 {
+					reg = <0x1000 0x2f20>;
+				};
+
+				precal_art_5000: precal@5000 {
+					reg = <0x5000 0x2f20>;
+				};
 			};
 
 			firmware@180000 {
@@ -265,18 +262,15 @@
 			function = "blsp_spi0";
 			pins = "gpio13", "gpio14", "gpio15";
 		};
-
 		pinmux_cs {
 			function = "gpio";
 			pins = "gpio12";
 		};
-
 		pinconf {
 			pins = "gpio13", "gpio14", "gpio15";
 			drive-strength = <12>;
 			bias-disable;
 		};
-
 		pinconf_cs {
 			pins = "gpio12";
 			drive-strength = <2>;
@@ -291,25 +285,21 @@
 			function = "blsp_spi1";
 			bias-disable;
 		};
-
 		host_int {
 			pins = "gpio42";
 			function = "gpio";
 			input;
 		};
-
 		cs {
 			pins = "gpio45";
 			function = "gpio";
 			bias-pull-up;
 		};
-
 		wake {
 			pins = "gpio40";
 			function = "gpio";
 			output-high;
 		};
-
 		reset {
 			pins = "gpio49";
 			function = "gpio";
@@ -354,10 +344,14 @@
 
 &wifi0 {
 	status = "okay";
+	nvmem-cell-names = "pre-calibration";
+	nvmem-cells = <&precal_art_1000>;
 	qcom,ath10k-calibration-variant = "GL-S1300";
 };
 
 &wifi1 {
 	status = "okay";
+	nvmem-cell-names = "pre-calibration";
+	nvmem-cells = <&precal_art_5000>;
 	qcom,ath10k-calibration-variant = "GL-S1300";
 };

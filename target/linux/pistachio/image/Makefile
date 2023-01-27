@@ -5,7 +5,11 @@
 include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/image.mk
 
-KERNEL_LOADADDR := 0x80400000
+ifdef CONFIG_LINUX_5_10
+  KERNEL_LOADADDR := 0x80400000
+else
+  KERNEL_LOADADDR := 0x80100000
+endif
 
 define Device/Default
   PROFILES := Default
@@ -15,6 +19,7 @@ define Device/Default
   KERNEL_SUFFIX := -kernel.itb
   KERNEL_INSTALL := 1
   KERNEL_IN_UBI := 1
+  DEVICE_DTS_CONFIG := config@1
   IMAGES := factory.ubi sysupgrade.tar
   IMAGE/factory.ubi := append-ubi
   IMAGE/sysupgrade.tar := sysupgrade-tar

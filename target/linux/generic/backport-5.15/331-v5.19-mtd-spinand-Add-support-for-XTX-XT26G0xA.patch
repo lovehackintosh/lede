@@ -84,8 +84,8 @@ Link: https://lore.kernel.org/linux-mtd/20220418132803.664103-1-felix@matouschek
 +	if (section)
 +		return -ERANGE;
 +
-+	region->offset = 8;
-+	region->length = 40;
++	region->offset = 48;
++	region->length = 16;
 +
 +	return 0;
 +}
@@ -97,7 +97,7 @@ Link: https://lore.kernel.org/linux-mtd/20220418132803.664103-1-felix@matouschek
 +		return -ERANGE;
 +
 +	region->offset = 1;
-+	region->length = 7;
++	region->length = 47;
 +
 +	return 0;
 +}
@@ -133,7 +133,7 @@ Link: https://lore.kernel.org/linux-mtd/20220418132803.664103-1-felix@matouschek
 +
 +static const struct spinand_info xtx_spinand_table[] = {
 +	SPINAND_INFO("XT26G01A",
-+		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xE1),
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0xE1),
 +		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
 +		     NAND_ECCREQ(8, 512),
 +		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
@@ -143,7 +143,7 @@ Link: https://lore.kernel.org/linux-mtd/20220418132803.664103-1-felix@matouschek
 +		     SPINAND_ECCINFO(&xt26g0xa_ooblayout,
 +				     xt26g0xa_ecc_get_status)),
 +	SPINAND_INFO("XT26G02A",
-+		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xE2),
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0xE2),
 +		     NAND_MEMORG(1, 2048, 64, 64, 2048, 40, 1, 1, 1),
 +		     NAND_ECCREQ(8, 512),
 +		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
@@ -153,7 +153,7 @@ Link: https://lore.kernel.org/linux-mtd/20220418132803.664103-1-felix@matouschek
 +		     SPINAND_ECCINFO(&xt26g0xa_ooblayout,
 +				     xt26g0xa_ecc_get_status)),
 +	SPINAND_INFO("XT26G04A",
-+		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xE3),
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0xE3),
 +		     NAND_MEMORG(1, 2048, 64, 128, 2048, 40, 1, 1, 1),
 +		     NAND_ECCREQ(8, 512),
 +		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,

@@ -147,7 +147,7 @@
 };
 
 &ref {
-	clock-frequency = <25000000>;
+	clock-frequency = <40000000>;
 };
 
 &spi {
@@ -173,7 +173,7 @@
 				read-only;
 			};
 
-			hard_config: hard_config {
+			hard_config {
 				read-only;
 			};
 
@@ -199,8 +199,6 @@
 
 &mdio0 {
 	status = "okay";
-
-	phy-mask = <0>;
 
 	phy0: ethernet-phy@0 {
 		reg = <0>;

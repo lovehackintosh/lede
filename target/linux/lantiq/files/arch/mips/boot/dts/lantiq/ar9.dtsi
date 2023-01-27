@@ -44,8 +44,8 @@
 			#interrupt-cells = <1>;
 			interrupt-controller;
 			compatible = "lantiq,icu";
-			/* TODO: AR9 should have ICU1 (like VR9) too */
-			reg = <0x80200 0xc8>;
+			reg = <0x80200 0xc8	/* icu0 */
+				0x80300 0xc8>;	/* icu1 */
 		};
 
 		watchdog@803f0 {
@@ -385,9 +385,10 @@
 				0xe108000 0x200>;
 			interrupt-parent = <&icu0>;
 			interrupts = <73 72>;
-			mac-address = [ 00 11 22 33 44 55 ];
 			pinctrl-0 = <&mdio_pins>;
 			pinctrl-names = "default";
+			lantiq,tx-burst-length = <8>;
+			lantiq,rx-burst-length = <8>;
 		};
 
 		ppe@e234000 {
@@ -414,6 +415,8 @@
 			req-mask = <0x1>;
 
 			device_type = "pci";
+
+			resets = <&reset 13 13>;
 		};
 	};
 

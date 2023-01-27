@@ -8,8 +8,10 @@ ARCH:=aarch64
 BOARD:=octeontx
 BOARDNAME:=Octeon-TX
 FEATURES:=squashfs ramdisk targz pcie gpio rtc usb fpu
+SUBTARGETS:=generic
 
-KERNEL_PATCHVER:=5.4
+KERNEL_PATCHVER:=5.10
+KERNEL_TESTING_PATCHVER:=5.15
 
 define Target/Description
 	Build images for Octeon-TX CN80XX/CN81XX based boards
