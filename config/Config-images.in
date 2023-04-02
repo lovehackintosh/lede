@@ -60,7 +60,6 @@ menu "Target Images"
 		config TARGET_INITRAMFS_FORCE
 			bool "Force"
 			depends on TARGET_ROOTFS_INITRAMFS
-			default n
 			help
 			  Ignore the initramfs passed by the bootloader.
 
@@ -129,7 +128,6 @@ menu "Target Images"
 		config TARGET_EXT4_JOURNAL
 			bool "Create a journaling filesystem"
 			depends on TARGET_ROOTFS_EXT4FS
-			default n
 			help
 			  Create an ext4 filesystem with a journal.
 
@@ -202,7 +200,8 @@ menu "Target Images"
 		depends on TARGET_x86
 		depends on TARGET_ROOTFS_EXT4FS || TARGET_ROOTFS_JFFS2 || TARGET_ROOTFS_SQUASHFS
 		select PACKAGE_grub2
-		default n
+		select PACKAGE_grub2-bios-setup
+		default y
 
 	config GRUB_EFI_IMAGES
 		bool "Build GRUB EFI images (Linux x86 or x86_64 host only)"
@@ -210,6 +209,7 @@ menu "Target Images"
 		depends on TARGET_ROOTFS_EXT4FS || TARGET_ROOTFS_JFFS2 || TARGET_ROOTFS_SQUASHFS
 		select PACKAGE_grub2
 		select PACKAGE_grub2-efi
+		select PACKAGE_grub2-bios-setup
 		select PACKAGE_kmod-fs-vfat
 		default y
 
@@ -232,7 +232,6 @@ menu "Target Images"
 	config GRUB_FLOWCONTROL
 		bool "Use RTE/CTS on serial console"
 		depends on GRUB_SERIAL != ""
-		default n
 
 	config GRUB_BOOTOPTS
 		string "Extra kernel boot options"
@@ -293,6 +292,7 @@ menu "Target Images"
 	comment "Image Options"
 
 	source "target/linux/*/image/Config.in"
+	source "target/linux/*/*/image/Config.in"
 
 	config TARGET_KERNEL_PARTSIZE
 		int "Kernel partition size (in MiB)"
@@ -320,7 +320,6 @@ menu "Target Images"
 
 	config TARGET_ROOTFS_PERSIST_VAR
 		bool "Make /var persistent"
-		default n
 		help
 		  Do not symlink /var to /tmp, so that its content will persist
 		  across reboots. When enabled, /var/run will still be linked
